@@ -48,9 +48,6 @@
             min-height: 100vh;
         }
 
-        /* ============================================================
-           LOGIN SCREEN
-           ============================================================ */
         .login-screen {
             display: flex;
             align-items: center;
@@ -134,9 +131,6 @@
             display: none;
         }
 
-        /* ============================================================
-           COMPONENTES
-           ============================================================ */
         .app-content {
             display: none;
         }
@@ -648,9 +642,6 @@
 </head>
 <body>
 
-    <!-- ============================================================
-    LOGIN SCREEN
-    ============================================================ -->
     <div class="login-screen" id="loginScreen">
         <div class="login-box">
             <div class="logo">
@@ -673,11 +664,7 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    CONTENIDO PRINCIPAL
-    ============================================================ -->
     <div class="app-content" id="appContent">
-
         <div class="toast" id="toast"></div>
 
         <header class="app-header">
@@ -699,8 +686,6 @@
         </header>
 
         <div class="app-grid">
-
-            <!-- FORMULARIO -->
             <div>
                 <div class="card" style="margin-bottom: 20px;">
                     <div class="card__title">
@@ -804,7 +789,6 @@
                 </div>
             </div>
 
-            <!-- LISTA DE FACTURAS -->
             <div>
                 <div class="card">
                     <div class="card__title" style="justify-content:space-between;">
@@ -860,13 +844,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ============================================================
-    FACTURA PREVIEW (para PDF)
-    ============================================================ -->
     <div id="facturaPreview">
         <div class="factura-header">
             <div>
@@ -921,14 +901,10 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    SCRIPT COMPLETO - CON PROXY PROPIO EN VERCEL
-    ============================================================ -->
     <script>
         // ============================================================
         // CONFIGURACIÓN - PROXY PROPIO EN VERCEL
         // ============================================================
-        // El proxy está en /api/proxy - MISMO DOMINIO, SIN CORS
         const API_URL = '/api/proxy';
         
         console.log('✅ API URL configurada con proxy propio en Vercel');
@@ -937,9 +913,6 @@
         let facturas = [];
         let editando = false;
 
-        // ============================================================
-        // LOGIN
-        // ============================================================
         function login(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value;
@@ -968,9 +941,6 @@
             }
         }
 
-        // ============================================================
-        // LLAMADA A LA API - AHORA SIN CORS
-        // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
                 const payload = {
@@ -980,7 +950,7 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición al proxy...', { accion, data, numOrden });
+                console.log('📤 Enviando petición al proxy...');
 
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -1014,9 +984,6 @@
             }
         }
 
-        // ============================================================
-        // CARGAR FACTURAS
-        // ============================================================
         async function cargarFacturas() {
             mostrarToast('📥 Cargando facturas...', 'info');
             try {
@@ -1046,9 +1013,6 @@
             }
         }
 
-        // ============================================================
-        // GENERAR NÚMERO DE ORDEN AUTOMÁTICO
-        // ============================================================
         function generarNumOrden() {
             const year = new Date().getFullYear();
             const count = facturas.filter(f => {
@@ -1062,9 +1026,6 @@
             document.getElementById('numOrden').value = generarNumOrden();
         }
 
-        // ============================================================
-        // ITEMS DINÁMICOS
-        // ============================================================
         function agregarItem(concepto = '', cantidad = 1, valor = 0) {
             const container = document.getElementById('itemsContainer');
             const index = container.querySelectorAll('.service-item').length;
@@ -1123,9 +1084,6 @@
             document.getElementById('saldo').value = formatearPeso(saldo);
         }
 
-        // ============================================================
-        // GUARDAR FACTURA
-        // ============================================================
         async function guardarFactura(e) {
             e.preventDefault();
 
@@ -1187,9 +1145,6 @@
             }
         }
 
-        // ============================================================
-        // ELIMINAR FACTURA
-        // ============================================================
         async function eliminarFactura(numOrden) {
             if (!confirm(`¿Eliminar la factura ${numOrden}?`)) return;
 
@@ -1208,9 +1163,6 @@
             }
         }
 
-        // ============================================================
-        // EDITAR FACTURA
-        // ============================================================
         function editarFactura(numOrden) {
             const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
@@ -1290,9 +1242,6 @@
             recalcularTodo();
         }
 
-        // ============================================================
-        // RENDERIZAR FACTURAS
-        // ============================================================
         function renderizarFacturas() {
             const tbody = document.getElementById('tablaFacturas');
             const empty = document.getElementById('emptyState');
@@ -1352,9 +1301,6 @@
             }).join('');
         }
 
-        // ============================================================
-        // ACTUALIZAR RESUMEN
-        // ============================================================
         function actualizarResumen() {
             const total = facturas.reduce((sum, f) => sum + (f.Total || 0), 0);
             const pagadas = facturas.filter(f => f.Estado === 'Pagado').reduce((sum, f) => sum + (f.Total || 0), 0);
@@ -1365,9 +1311,6 @@
             document.getElementById('resumenPendientes').textContent = formatearPeso(pendientes);
         }
 
-        // ============================================================
-        // VER FACTURA - PREPARAR PDF
-        // ============================================================
         function verFactura(numOrden) {
             const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
@@ -1417,9 +1360,6 @@
             exportarPDFPersonalizado(factura);
         }
 
-        // ============================================================
-        // EXPORTAR PDF
-        // ============================================================
         function exportarPDF() {
             if (facturas.length === 0) {
                 mostrarToast('⚠️ No hay facturas para exportar', 'error');
@@ -1459,9 +1399,6 @@
             });
         }
 
-        // ============================================================
-        // EXPORTAR EXCEL (CSV)
-        // ============================================================
         function exportarExcel() {
             if (facturas.length === 0) {
                 mostrarToast('⚠️ No hay facturas para exportar', 'error');
@@ -1493,9 +1430,6 @@
             mostrarToast('✅ Excel exportado correctamente', 'success');
         }
 
-        // ============================================================
-        // UTILIDADES
-        // ============================================================
         function formatearPeso(valor) {
             return '$' + (valor || 0).toLocaleString('es-CO');
         }
@@ -1513,9 +1447,6 @@
             }, 4000);
         }
 
-        // ============================================================
-        // INICIALIZACIÓN
-        // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').value = hoy;
