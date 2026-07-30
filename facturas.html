@@ -922,18 +922,16 @@
     </div>
 
     <!-- ============================================================
-    SCRIPT COMPLETO - CON PROXY CORS
+    SCRIPT COMPLETO - CON PROXY PROPIO EN VERCEL
     ============================================================ -->
     <script>
         // ============================================================
-        // CONFIGURACIÓN - URL CON PROXY CORS (FUNCIONA 100%)
+        // CONFIGURACIÓN - PROXY PROPIO EN VERCEL
         // ============================================================
-        const API_URL_ORIGINAL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
+        // El proxy está en /api/proxy - MISMO DOMINIO, SIN CORS
+        const API_URL = '/api/proxy';
         
-        // USAMOS UN PROXY CORS QUE FUNCIONA 100%
-        const API_URL = 'https://cors-anywhere.herokuapp.com/' + API_URL_ORIGINAL;
-        
-        console.log('✅ API URL configurada con proxy CORS');
+        console.log('✅ API URL configurada con proxy propio en Vercel');
 
         let CONTRASENA = '';
         let facturas = [];
@@ -971,7 +969,7 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API CON PROXY CORS
+        // LLAMADA A LA API - AHORA SIN CORS
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
@@ -982,26 +980,21 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición:', { accion, data, numOrden });
+                console.log('📤 Enviando petición al proxy...', { accion, data, numOrden });
 
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Origin': 'https://fraelbeth-gonzalez.vercel.app'
                     },
                     body: JSON.stringify(payload)
                 });
 
-                console.log('📥 Respuesta recibida, status:', response.status);
-
                 const text = await response.text();
-                console.log('📄 Respuesta texto:', text);
+                console.log('📄 Respuesta del proxy:', text);
 
                 try {
-                    const json = JSON.parse(text);
-                    console.log('✅ JSON parseado:', json);
-                    return json;
+                    return JSON.parse(text);
                 } catch (e) {
                     console.warn('⚠️ No es JSON:', text);
                     if (response.status === 200) {
@@ -1014,71 +1007,10 @@
                 }
             } catch (error) {
                 console.error('❌ Error en llamada API:', error);
-                
-                // ============================================================
-                // PLAN B: Intentar con proxy alternativo
-                // ============================================================
-                try {
-                    console.log('🔄 Intentando con proxy alternativo...');
-                    const proxyUrl2 = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(API_URL_ORIGINAL);
-                    
-                    const response2 = await fetch(proxyUrl2, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            accion: accion,
-                            password: CONTRASENA,
-                            data: data,
-                            numOrden: numOrden
-                        })
-                    });
-                    
-                    const text2 = await response2.text();
-                    console.log('📄 Respuesta proxy 2:', text2);
-                    
-                    try {
-                        return JSON.parse(text2);
-                    } catch (e) {
-                        return { 
-                            status: 'error', 
-                            message: 'Error de conexión con el proxy' 
-                        };
-                    }
-                } catch (proxyError) {
-                    console.error('❌ Error con proxy:', proxyError);
-                    
-                    // ============================================================
-                    // PLAN C: Último intento con fetch directo
-                    // ============================================================
-                    try {
-                        console.log('🔄 Intentando con fetch directo...');
-                        const response3 = await fetch(API_URL_ORIGINAL, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                accion: accion,
-                                password: CONTRASENA,
-                                data: data,
-                                numOrden: numOrden
-                            })
-                        });
-                        
-                        return { 
-                            status: 'success', 
-                            message: 'Operación enviada (modo no-cors)' 
-                        };
-                    } catch (e3) {
-                        return { 
-                            status: 'error', 
-                            message: 'Error de conexión. Verifica tu internet.' 
-                        };
-                    }
-                }
+                return { 
+                    status: 'error', 
+                    message: 'Error de conexión. Verifica tu internet.' 
+                };
             }
         }
 
