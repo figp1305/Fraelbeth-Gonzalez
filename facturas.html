@@ -271,12 +271,6 @@
             gap: 12px;
         }
 
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
         .form-row-4 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -392,11 +386,6 @@
             text-align: center;
             padding: 40px 20px;
             color: var(--gray-text);
-        }
-
-        .empty-state svg {
-            margin-bottom: 12px;
-            opacity: 0.3;
         }
 
         .app-header {
@@ -598,7 +587,6 @@
                 justify-content: center;
             }
             .form-row,
-            .form-row-3,
             .form-row-4 {
                 grid-template-columns: 1fr;
             }
@@ -934,35 +922,34 @@
     </div>
 
     <!-- ============================================================
-    SCRIPT - SIN CONTRASEÑA EN EL CÓDIGO
+    SCRIPT COMPLETO - SIN CONTRASEÑA EN EL CÓDIGO
     ============================================================ -->
     <script>
         // ============================================================
-        // CONFIGURACIÓN - LA CONTRASEÑA SE TOMA DEL LOGIN
+        // CONFIGURACIÓN - REEMPLAZA TU_URL_AQUI
         // ============================================================
         const API_URL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
-        console.log('API URL configurada con CORS habilitado'
-        let CONTRASENA = ''; // Se llena en el login
+        console.log('✅ API URL configurada correctamente');
+
+        let CONTRASENA = '';
         let facturas = [];
         let editando = false;
 
         // ============================================================
-        // LOGIN - Guarda la contraseña en memoria
+        // LOGIN
         // ============================================================
         function login(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value;
             const pass = document.getElementById('loginPass').value;
 
-            // Guardamos la contraseña para usarla en todas las llamadas API
             CONTRASENA = pass;
 
-            // Verificación básica en frontend (la REAL se hace en Apps Script)
             if (user === 'admin' && pass.length > 0) {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appContent').classList.add('active');
                 cargarFacturas();
-                mostrarToast('Sesión iniciada correctamente ✅', 'success');
+                mostrarToast('✅ Sesión iniciada correctamente', 'success');
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
@@ -970,22 +957,23 @@
 
         function cerrarSesion() {
             if (confirm('¿Cerrar sesión?')) {
-                CONTRASENA = ''; // Borrar la contraseña de memoria
+                CONTRASENA = '';
                 document.getElementById('appContent').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('loginPass').value = '';
                 document.getElementById('loginError').style.display = 'none';
+                mostrarToast('Sesión cerrada', 'success');
             }
         }
 
         // ============================================================
-        // LLAMADA A LA API - Envía la contraseña del login
+        // LLAMADA A LA API CON FALLBACK
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
                 const payload = {
                     accion: accion,
-                    password: CONTRASENA, // <-- Se envía desde el login
+                    password: CONTRASENA,
                     data: data,
                     numOrden: numOrden
                 };
@@ -1002,20 +990,59 @@
                 try {
                     return JSON.parse(text);
                 } catch (e) {
-                    console.warn('Respuesta no JSON:', text);
-                    return { status: 'success', message: 'Operación completada' };
+                    console.warn('⚠️ Respuesta no JSON, intentando con proxy...');
+                    return await llamarAPIProxy(accion, data, numOrden);
                 }
             } catch (error) {
-                console.error('Error en llamada API:', error);
-                return { status: 'error', message: 'Error de conexión con Google Sheets' };
+                console.error('❌ Error directo:', error);
+                return await llamarAPIProxy(accion, data, numOrden);
             }
         }
 
         // ============================================================
-        // CARGAR FACTURAS DESDE GOOGLE SHEETS
+        // FALLBACK CON PROXY CORS
+        // ============================================================
+        async function llamarAPIProxy(accion, data = null, numOrden = null) {
+            try {
+                const payload = {
+                    accion: accion,
+                    password: CONTRASENA,
+                    data: data,
+                    numOrden: numOrden
+                };
+
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(API_URL);
+
+                const response = await fetch(proxyUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const text = await response.text();
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    return {
+                        status: 'error',
+                        message: 'No se pudo conectar. Verifica tu internet.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    status: 'error',
+                    message: 'Error de conexión. Por favor, intenta nuevamente.'
+                };
+            }
+        }
+
+        // ============================================================
+        // CARGAR FACTURAS
         // ============================================================
         async function cargarFacturas() {
-            mostrarToast('Cargando facturas...', 'success');
+            mostrarToast('📥 Cargando facturas...', 'info');
             try {
                 const resultado = await llamarAPI('obtener');
 
@@ -1024,28 +1051,27 @@
                     renderizarFacturas();
                     actualizarResumen();
                     actualizarNumOrden();
-                    mostrarToast(`${facturas.length} facturas cargadas`, 'success');
+                    mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
                 } else {
-                    // Si la contraseña es incorrecta, Apps Script devuelve error
                     if (resultado.message === 'Contraseña incorrecta') {
-                        mostrarToast('Contraseña incorrecta. Verifica tus credenciales.', 'error');
+                        mostrarToast('❌ Contraseña incorrecta. Verifica tus credenciales.', 'error');
                         cerrarSesion();
                     } else {
-                        mostrarToast('Error al cargar facturas: ' + (resultado.message || ''), 'error');
+                        mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
                     }
                     facturas = [];
                     renderizarFacturas();
                 }
             } catch (error) {
-                console.error('Error:', error);
-                mostrarToast('Error de conexión con Google Sheets.', 'error');
+                console.error('❌ Error:', error);
+                mostrarToast('⚠️ Error de conexión. Verifica tu internet.', 'error');
                 facturas = [];
                 renderizarFacturas();
             }
         }
 
         // ============================================================
-        // FUNCIÓN PARA GENERAR NÚMERO DE ORDEN AUTOMÁTICO
+        // GENERAR NÚMERO DE ORDEN AUTOMÁTICO
         // ============================================================
         function generarNumOrden() {
             const year = new Date().getFullYear();
@@ -1071,9 +1097,9 @@
             div.className = 'service-item';
             div.dataset.index = index;
             div.innerHTML = `
-                <input type="text" class="item-concepto" placeholder="Ej: Configuración de campaña" value="${concepto}" required />
-                <input type="number" class="item-cantidad" placeholder="1" value="${cantidad}" min="1" oninput="recalcularTodo()" />
-                <input type="number" class="item-valor" placeholder="0" value="${valor}" min="0" step="1000" oninput="recalcularTodo()" />
+                <input type="text" class="item-concepto" placeholder="Ej: Configuración de campaña" value="${concepto}" />
+                <input type="number" class="item-cantidad" placeholder="1" value="${cantidad}" min="1" />
+                <input type="number" class="item-valor" placeholder="0" value="${valor}" min="0" step="1000" />
                 <span class="item-total">${formatearPeso(valor * cantidad)}</span>
                 <button type="button" class="btn btn--danger btn--sm" onclick="eliminarItem(this)">✕</button>
             `;
@@ -1101,11 +1127,9 @@
             let subtotal = 0;
 
             items.forEach(item => {
-                const concepto = item.querySelector('.item-concepto').value.trim();
                 const cantidad = parseInt(item.querySelector('.item-cantidad').value) || 0;
                 const valor = parseInt(item.querySelector('.item-valor').value) || 0;
                 const total = cantidad * valor;
-
                 const totalSpan = item.querySelector('.item-total');
                 totalSpan.textContent = formatearPeso(total);
                 subtotal += total;
@@ -1120,7 +1144,6 @@
             const subtotal = parseInt(document.getElementById('subtotal').value.replace(/[^0-9]/g, '')) || 0;
             const abono = parseInt(document.getElementById('abono').value) || 0;
             const saldo = Math.max(0, subtotal - abono);
-
             document.getElementById('saldo').value = formatearPeso(saldo);
         }
 
@@ -1141,7 +1164,7 @@
             });
 
             if (itemsValidos.length === 0) {
-                mostrarToast('Agrega al menos un item con concepto y valor > 0', 'error');
+                mostrarToast('❌ Agrega al menos un item con concepto y valor > 0', 'error');
                 return;
             }
 
@@ -1149,7 +1172,7 @@
             const cliente = document.getElementById('cliente').value.trim();
 
             if (!cliente) {
-                mostrarToast('El nombre del cliente es obligatorio', 'error');
+                mostrarToast('❌ El nombre del cliente es obligatorio', 'error');
                 return;
             }
 
@@ -1176,15 +1199,15 @@
                 const resultado = await llamarAPI('guardar', facturaData);
 
                 if (resultado.status === 'success') {
-                    mostrarToast(`Factura ${numOrden} guardada ✅`, 'success');
+                    mostrarToast(`✅ Factura ${numOrden} guardada`, 'success');
                     resetearFormulario();
                     await cargarFacturas();
                 } else {
-                    mostrarToast('Error al guardar: ' + (resultado.message || ''), 'error');
+                    mostrarToast('❌ Error al guardar: ' + (resultado.message || ''), 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                mostrarToast('Error de conexión al guardar', 'error');
+                console.error('❌ Error:', error);
+                mostrarToast('⚠️ Error de conexión al guardar', 'error');
             }
         }
 
@@ -1198,14 +1221,14 @@
                 const resultado = await llamarAPI('eliminar', null, numOrden);
 
                 if (resultado.status === 'success') {
-                    mostrarToast(`Factura ${numOrden} eliminada`, 'success');
+                    mostrarToast(`✅ Factura ${numOrden} eliminada`, 'success');
                     await cargarFacturas();
                 } else {
-                    mostrarToast('Error al eliminar', 'error');
+                    mostrarToast('❌ Error al eliminar', 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                mostrarToast('Error de conexión', 'error');
+                console.error('❌ Error:', error);
+                mostrarToast('⚠️ Error de conexión', 'error');
             }
         }
 
@@ -1215,7 +1238,7 @@
         function editarFactura(numOrden) {
             const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
-                mostrarToast('Factura no encontrada', 'error');
+                mostrarToast('❌ Factura no encontrada', 'error');
                 return;
             }
 
@@ -1372,7 +1395,7 @@
         function verFactura(numOrden) {
             const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
-                mostrarToast('Factura no encontrada', 'error');
+                mostrarToast('❌ Factura no encontrada', 'error');
                 return;
             }
 
@@ -1423,7 +1446,7 @@
         // ============================================================
         function exportarPDF() {
             if (facturas.length === 0) {
-                mostrarToast('No hay facturas para exportar', 'error');
+                mostrarToast('⚠️ No hay facturas para exportar', 'error');
                 return;
             }
             const factura = facturas[facturas.length - 1];
@@ -1452,10 +1475,10 @@
 
             html2pdf().set(opt).from(preview).save().then(() => {
                 preview.style.display = 'none';
-                mostrarToast('PDF generado correctamente ✅', 'success');
+                mostrarToast('✅ PDF generado correctamente', 'success');
             }).catch((err) => {
                 preview.style.display = 'none';
-                mostrarToast('Error al generar PDF', 'error');
+                mostrarToast('❌ Error al generar PDF', 'error');
                 console.error(err);
             });
         }
@@ -1465,7 +1488,7 @@
         // ============================================================
         function exportarExcel() {
             if (facturas.length === 0) {
-                mostrarToast('No hay facturas para exportar', 'error');
+                mostrarToast('⚠️ No hay facturas para exportar', 'error');
                 return;
             }
 
@@ -1491,7 +1514,7 @@
             link.click();
             URL.revokeObjectURL(link.href);
 
-            mostrarToast('Excel exportado correctamente ✅', 'success');
+            mostrarToast('✅ Excel exportado correctamente', 'success');
         }
 
         // ============================================================
