@@ -24,12 +24,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Obtener el body de la petición
     const body = req.body;
+    console.log('📤 Proxy recibiendo petición');
 
-    console.log('📤 Proxy recibiendo petición:', body);
-
-    // Reenviar la petición a Google Apps Script
     const response = await fetch(API_URL_ORIGINAL, {
       method: 'POST',
       headers: {
@@ -39,10 +36,8 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log('📥 Proxy recibiendo respuesta');
 
-    console.log('📥 Proxy recibiendo respuesta:', data);
-
-    // Devolver la respuesta
     res.status(200).json(data);
 
   } catch (error) {
