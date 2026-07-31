@@ -901,568 +901,613 @@
         </div>
     </div>
 
-    <script>
-        // ============================================================
-        // CONFIGURACIÓN - PROXY PROPIO EN VERCEL
-        // ============================================================
-        const API_URL = '/api/proxy';
-        
-        console.log('✅ API URL configurada con proxy propio en Vercel');
+<script>
+// ============================================================
+// CONFIGURACIÓN - PROXY PROPIO EN VERCEL
+// ============================================================
+const API_URL = '/api/proxy';
+console.log('✅ API URL configurada con proxy propio en Vercel');
 
-        let CONTRASENA = '';
-        let facturas = [];
-        let editando = false;
+// ============================================================
+// VARIABLES GLOBALES
+// ============================================================
+let CONTRASENA = 'L1aM4b3L'; // <-- CONTRASEÑA FIJA (para pruebas)
+let facturas = [];
+let editando = false;
 
-       function login(e) {
+// ============================================================
+// LOGIN - AHORA USA LA CONTRASEÑA FIJA
+// ============================================================
+function login(e) {
     e.preventDefault();
     const user = document.getElementById('loginUser').value;
     const pass = document.getElementById('loginPass').value;
 
-    // === PARA DEPURAR: Mostrar la contraseña que estás escribiendo ===
     console.log('🔑 Contraseña escrita: "' + pass + '"');
-    console.log('🔑 Longitud: ' + pass.length);
-    
-    // === FORZAR LA CONTRASEÑA CORRECTA (SOLO PARA PRUEBAS) ===
-    // COMENTA LA LÍNEA DE ABAJO Y USA LA DE MÁS ABAJO PARA FORZAR
-    // CONTRASENA = pass;
-    CONTRASENA = 'L1aM4b3L'; // <-- FORZADO
+    console.log('🔑 Contraseña USADA: "' + CONTRASENA + '"');
 
-    if (user === 'admin' && pass.length > 0) {
+    // Siempre usa la contraseña fija, ignore lo que escriba el usuario
+    // CONTRASENA ya está definida arriba como 'L1aM4b3L'
+
+    if (user === 'admin') {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('appContent').classList.add('active');
         cargarFacturas();
         mostrarToast('✅ Sesión iniciada correctamente', 'success');
     } else {
         document.getElementById('loginError').style.display = 'block';
+        mostrarToast('❌ Usuario incorrecto', 'error');
     }
 }
 
-        function cerrarSesion() {
-            if (confirm('¿Cerrar sesión?')) {
-                CONTRASENA = '';
-                document.getElementById('appContent').classList.remove('active');
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('loginPass').value = '';
-                document.getElementById('loginError').style.display = 'none';
-                mostrarToast('Sesión cerrada', 'success');
-            }
-        }
-
-        async function llamarAPI(accion, data = null, numOrden = null) {
-            try {
-                const payload = {
-                    accion: accion,
-                    password: CONTRASENA,
-                    data: data,
-                    numOrden: numOrden
-                };
-
-                console.log('📤 Enviando petición al proxy...');
-
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const text = await response.text();
-                console.log('📄 Respuesta del proxy:', text);
-
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    console.warn('⚠️ No es JSON:', text);
-                    if (response.status === 200) {
-                        return { status: 'success', message: 'Operación completada' };
-                    }
-                    return { 
-                        status: 'error', 
-                        message: 'Respuesta no válida del servidor' 
-                    };
-                }
-            } catch (error) {
-                console.error('❌ Error en llamada API:', error);
-                return { 
-                    status: 'error', 
-                    message: 'Error de conexión. Verifica tu internet.' 
-                };
-            }
-        }
-
-        async function cargarFacturas() {
-            mostrarToast('📥 Cargando facturas...', 'info');
-            try {
-                const resultado = await llamarAPI('obtener');
-
-                if (resultado.status === 'success') {
-                    facturas = resultado.data || [];
-                    renderizarFacturas();
-                    actualizarResumen();
-                    actualizarNumOrden();
-                    mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
-                } else {
-                    if (resultado.message === 'Contraseña incorrecta') {
-                        mostrarToast('❌ Contraseña incorrecta. Verifica tus credenciales.', 'error');
-                        cerrarSesion();
-                    } else {
-                        mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
-                    }
-                    facturas = [];
-                    renderizarFacturas();
-                }
-            } catch (error) {
-                console.error('❌ Error:', error);
-                mostrarToast('⚠️ Error de conexión. Verifica tu internet.', 'error');
-                facturas = [];
-                renderizarFacturas();
-            }
-        }
-
-        function generarNumOrden() {
-            const year = new Date().getFullYear();
-            const count = facturas.filter(f => {
-                if (!f.NumOrden) return false;
-                return f.NumOrden.includes(`-${year}-`);
-            }).length + 1;
-            return `FG-${year}-${String(count).padStart(3, '0')}`;
-        }
-
-        function actualizarNumOrden() {
-            document.getElementById('numOrden').value = generarNumOrden();
-        }
-
-        function agregarItem(concepto = '', cantidad = 1, valor = 0) {
-            const container = document.getElementById('itemsContainer');
-            const index = container.querySelectorAll('.service-item').length;
-
-            const div = document.createElement('div');
-            div.className = 'service-item';
-            div.dataset.index = index;
-            div.innerHTML = `
-                <input type="text" class="item-concepto" placeholder="Ej: Configuración de campaña" value="${concepto}" />
-                <input type="number" class="item-cantidad" placeholder="1" value="${cantidad}" min="1" />
-                <input type="number" class="item-valor" placeholder="0" value="${valor}" min="0" step="1000" />
-                <span class="item-total">${formatearPeso(valor * cantidad)}</span>
-                <button type="button" class="btn btn--danger btn--sm" onclick="eliminarItem(this)">✕</button>
-            `;
-
-            div.querySelectorAll('input').forEach(input => {
-                input.addEventListener('input', recalcularTodo);
-            });
-
-            container.appendChild(div);
-            recalcularTodo();
-        }
-
-        function eliminarItem(btn) {
-            const item = btn.closest('.service-item');
-            if (document.querySelectorAll('.service-item').length > 1) {
-                item.remove();
-                recalcularTodo();
-            } else {
-                mostrarToast('Debe haber al menos un item', 'error');
-            }
-        }
-
-        function recalcularTodo() {
-            const items = document.querySelectorAll('.service-item');
-            let subtotal = 0;
-
-            items.forEach(item => {
-                const cantidad = parseInt(item.querySelector('.item-cantidad').value) || 0;
-                const valor = parseInt(item.querySelector('.item-valor').value) || 0;
-                const total = cantidad * valor;
-                const totalSpan = item.querySelector('.item-total');
-                totalSpan.textContent = formatearPeso(total);
-                subtotal += total;
-            });
-
-            document.getElementById('subtotal').value = formatearPeso(subtotal);
-            document.getElementById('total').value = formatearPeso(subtotal);
-            calcularSaldo();
-        }
-
-        function calcularSaldo() {
-            const subtotal = parseInt(document.getElementById('subtotal').value.replace(/[^0-9]/g, '')) || 0;
-            const abono = parseInt(document.getElementById('abono').value) || 0;
-            const saldo = Math.max(0, subtotal - abono);
-            document.getElementById('saldo').value = formatearPeso(saldo);
-        }
-
-        async function guardarFactura(e) {
-            e.preventDefault();
-
-            const itemsValidos = [];
-            document.querySelectorAll('.service-item').forEach(item => {
-                const concepto = item.querySelector('.item-concepto').value.trim();
-                const cantidad = parseInt(item.querySelector('.item-cantidad').value) || 0;
-                const valor = parseInt(item.querySelector('.item-valor').value) || 0;
-                if (concepto && valor > 0) {
-                    itemsValidos.push({ concepto, cantidad, valor, total: cantidad * valor });
-                }
-            });
-
-            if (itemsValidos.length === 0) {
-                mostrarToast('❌ Agrega al menos un item con concepto y valor > 0', 'error');
-                return;
-            }
-
-            const numOrden = document.getElementById('numOrden').value.trim();
-            const cliente = document.getElementById('cliente').value.trim();
-
-            if (!cliente) {
-                mostrarToast('❌ El nombre del cliente es obligatorio', 'error');
-                return;
-            }
-
-            const subtotal = itemsValidos.reduce((sum, i) => sum + i.total, 0);
-            const abono = parseInt(document.getElementById('abono').value) || 0;
-
-            const facturaData = {
-                id: document.getElementById('editId').value || '',
-                numOrden: numOrden,
-                fecha: document.getElementById('fecha').value,
-                cliente: cliente,
-                nit: document.getElementById('nit').value.trim(),
-                contacto: document.getElementById('contacto').value.trim(),
-                descripcion: document.getElementById('descripcion').value.trim(),
-                estado: document.getElementById('estado').value,
-                subtotal: subtotal,
-                abono: abono,
-                total: subtotal,
-                saldo: subtotal - abono,
-                items: itemsValidos
-            };
-
-            try {
-                const resultado = await llamarAPI('guardar', facturaData);
-
-                if (resultado.status === 'success') {
-                    mostrarToast(`✅ Factura ${numOrden} guardada`, 'success');
-                    resetearFormulario();
-                    await cargarFacturas();
-                } else {
-                    mostrarToast('❌ Error al guardar: ' + (resultado.message || ''), 'error');
-                }
-            } catch (error) {
-                console.error('❌ Error:', error);
-                mostrarToast('⚠️ Error de conexión al guardar', 'error');
-            }
-        }
-
-        async function eliminarFactura(numOrden) {
-            if (!confirm(`¿Eliminar la factura ${numOrden}?`)) return;
-
-            try {
-                const resultado = await llamarAPI('eliminar', null, numOrden);
-
-                if (resultado.status === 'success') {
-                    mostrarToast(`✅ Factura ${numOrden} eliminada`, 'success');
-                    await cargarFacturas();
-                } else {
-                    mostrarToast('❌ Error al eliminar', 'error');
-                }
-            } catch (error) {
-                console.error('❌ Error:', error);
-                mostrarToast('⚠️ Error de conexión', 'error');
-            }
-        }
-
-        function editarFactura(numOrden) {
-            const factura = facturas.find(f => f.NumOrden === numOrden);
-            if (!factura) {
-                mostrarToast('❌ Factura no encontrada', 'error');
-                return;
-            }
-
-            editando = true;
-            document.getElementById('formTitle').textContent = '✏️ Editar Orden de Servicio';
-            document.getElementById('editId').value = factura.ID || '';
-            document.getElementById('editNumOrden').value = factura.NumOrden || '';
-            document.getElementById('numOrden').value = factura.NumOrden || '';
-            document.getElementById('fecha').value = factura.Fecha || '';
-            document.getElementById('cliente').value = factura.Cliente || '';
-            document.getElementById('nit').value = factura.NIT || '';
-            document.getElementById('contacto').value = factura.Contacto || '';
-            document.getElementById('descripcion').value = factura.Descripcion || '';
-            document.getElementById('estado').value = factura.Estado || 'Pendiente';
-            document.getElementById('abono').value = factura.Abono || 0;
-
-            const container = document.getElementById('itemsContainer');
-            container.innerHTML = `
-                <div class="service-item-header">
-                    <span>Concepto *</span>
-                    <span>Cant.</span>
-                    <span>Valor Unit.</span>
-                    <span>Total</span>
-                    <span></span>
-                </div>
-            `;
-
-            const items = factura.items || [];
-            if (items.length === 0) {
-                agregarItem('', 1, 0);
-            } else {
-                items.forEach(item => {
-                    agregarItem(item.concepto || '', item.cantidad || 1, item.valor || 0);
-                });
-            }
-
-            document.getElementById('btnCancelar').style.display = 'block';
-            recalcularTodo();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cancelarEdicion() {
-            resetearFormulario();
-            mostrarToast('Edición cancelada', 'success');
-        }
-
-        function resetearFormulario() {
-            editando = false;
-            document.getElementById('formTitle').textContent = 'Nueva Orden de Servicio';
-            document.getElementById('editId').value = '';
-            document.getElementById('editNumOrden').value = '';
-            document.getElementById('cliente').value = '';
-            document.getElementById('nit').value = '';
-            document.getElementById('contacto').value = '';
-            document.getElementById('descripcion').value = '';
-            document.getElementById('estado').value = 'Pendiente';
-            document.getElementById('abono').value = '0';
-            document.getElementById('btnCancelar').style.display = 'none';
-
-            const container = document.getElementById('itemsContainer');
-            container.innerHTML = `
-                <div class="service-item-header">
-                    <span>Concepto *</span>
-                    <span>Cant.</span>
-                    <span>Valor Unit.</span>
-                    <span>Total</span>
-                    <span></span>
-                </div>
-            `;
-            agregarItem('', 1, 0);
-            actualizarNumOrden();
-            document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-            recalcularTodo();
-        }
-
-        function renderizarFacturas() {
-            const tbody = document.getElementById('tablaFacturas');
-            const empty = document.getElementById('emptyState');
-            const contador = document.getElementById('contadorFacturas');
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-
-            let filtradas = facturas;
-
-            if (searchTerm) {
-                filtradas = filtradas.filter(f =>
-                    (f.NumOrden || '').toLowerCase().includes(searchTerm) ||
-                    (f.Cliente || '').toLowerCase().includes(searchTerm) ||
-                    (f.NIT || '').toLowerCase().includes(searchTerm)
-                );
-            }
-
-            contador.textContent = `${filtradas.length} facturas`;
-
-            if (filtradas.length === 0) {
-                tbody.innerHTML = '';
-                empty.style.display = 'block';
-                return;
-            }
-
-            empty.style.display = 'none';
-
-            const sorted = [...filtradas].sort((a, b) => {
-                return new Date(b.Fecha) - new Date(a.Fecha);
-            });
-
-            tbody.innerHTML = sorted.map((f) => {
-                const estadoClass = {
-                    'Pagado': 'status-badge--paid',
-                    'Pendiente': 'status-badge--pending',
-                    'Cancelado': 'status-badge--cancelled'
-                } [f.Estado] || '';
-
-                const fechaFormateada = f.Fecha ? new Date(f.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-';
-                const total = f.Total || 0;
-                const saldo = f.Saldo || 0;
-
-                return `
-                    <tr>
-                        <td><strong>${f.NumOrden || '-'}</strong></td>
-                        <td>${fechaFormateada}</td>
-                        <td>${f.Cliente || '-'}</td>
-                        <td>${formatearPeso(total)}</td>
-                        <td>${formatearPeso(saldo)}</td>
-                        <td><span class="status-badge ${estadoClass}">${f.Estado || 'Pendiente'}</span></td>
-                        <td>
-                            <button class="btn btn--primary btn--sm" onclick="verFactura('${f.NumOrden}')" title="Ver PDF">📄</button>
-                            <button class="btn btn--outline btn--sm" onclick="editarFactura('${f.NumOrden}')" title="Editar">✏️</button>
-                            <button class="btn btn--danger btn--sm" onclick="eliminarFactura('${f.NumOrden}')" title="Eliminar">✕</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function actualizarResumen() {
-            const total = facturas.reduce((sum, f) => sum + (f.Total || 0), 0);
-            const pagadas = facturas.filter(f => f.Estado === 'Pagado').reduce((sum, f) => sum + (f.Total || 0), 0);
-            const pendientes = facturas.filter(f => f.Estado === 'Pendiente').reduce((sum, f) => sum + (f.Total || 0), 0);
-
-            document.getElementById('resumenTotal').textContent = formatearPeso(total);
-            document.getElementById('resumenPagadas').textContent = formatearPeso(pagadas);
-            document.getElementById('resumenPendientes').textContent = formatearPeso(pendientes);
-        }
-
-        function verFactura(numOrden) {
-            const factura = facturas.find(f => f.NumOrden === numOrden);
-            if (!factura) {
-                mostrarToast('❌ Factura no encontrada', 'error');
-                return;
-            }
-
-            let items = factura.items || [];
-            if (typeof items === 'string') {
-                try {
-                    items = JSON.parse(items);
-                } catch (e) {
-                    items = [];
-                }
-            }
-
-            document.getElementById('previewNumOrden').textContent = `N° ${factura.NumOrden || '-'}`;
-            document.getElementById('previewFecha').textContent = `Fecha: ${factura.Fecha ? new Date(factura.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-'}`;
-            document.getElementById('previewCliente').textContent = factura.Cliente || '-';
-            document.getElementById('previewNIT').textContent = factura.NIT || '-';
-            document.getElementById('previewContacto').textContent = factura.Contacto || '-';
-            document.getElementById('previewEstado').textContent = factura.Estado || 'Pendiente';
-            document.getElementById('previewDescripcion').textContent = factura.Descripcion || '-';
-
-            const tbody = document.getElementById('previewItems');
-            if (items.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" style="text-align:center;color:var(--gray-text);">Sin items</td>
-                    </tr>
-                `;
-            } else {
-                tbody.innerHTML = items.map(item => `
-                    <tr>
-                        <td>${item.concepto || 'Sin concepto'}</td>
-                        <td style="text-align:center;">${item.cantidad || 0}</td>
-                        <td style="text-align:right;">${formatearPeso(item.valor || 0)}</td>
-                        <td style="text-align:right;">${formatearPeso(item.total || 0)}</td>
-                    </tr>
-                `).join('');
-            }
-
-            document.getElementById('previewSubtotal').textContent = formatearPeso(factura.Subtotal || 0);
-            document.getElementById('previewAbono').textContent = formatearPeso(factura.Abono || 0);
-            document.getElementById('previewSaldo').textContent = formatearPeso(factura.Saldo || 0);
-
-            exportarPDFPersonalizado(factura);
-        }
-
-        function exportarPDF() {
-            if (facturas.length === 0) {
-                mostrarToast('⚠️ No hay facturas para exportar', 'error');
-                return;
-            }
-            const factura = facturas[facturas.length - 1];
-            verFactura(factura.NumOrden);
-        }
-
-        function exportarPDFPersonalizado(factura) {
-            const preview = document.getElementById('facturaPreview');
-            preview.style.display = 'block';
-
-            const opt = {
-                margin: [10, 10, 10, 10],
-                filename: `OrdenServicio_${factura.NumOrden || 'factura'}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    letterRendering: true,
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            };
-
-            html2pdf().set(opt).from(preview).save().then(() => {
-                preview.style.display = 'none';
-                mostrarToast('✅ PDF generado correctamente', 'success');
-            }).catch((err) => {
-                preview.style.display = 'none';
-                mostrarToast('❌ Error al generar PDF', 'error');
-                console.error(err);
-            });
-        }
-
-        function exportarExcel() {
-            if (facturas.length === 0) {
-                mostrarToast('⚠️ No hay facturas para exportar', 'error');
-                return;
-            }
-
-            let csv = 'N° Orden,Fecha,Cliente,NIT,Contacto,Estado,Subtotal,Abono,Total,Saldo,Items\n';
-
-            facturas.forEach(f => {
-                const fechaFormateada = f.Fecha ? new Date(f.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-';
-                let itemsStr = '';
-                try {
-                    const items = typeof f.items === 'string' ? JSON.parse(f.items) : (f.items || []);
-                    itemsStr = items.map(i => `${i.concepto || ''} (x${i.cantidad || 0})`).join('; ');
-                } catch (e) {
-                    itemsStr = '';
-                }
-                csv +=
-                    `"${f.NumOrden || ''}","${fechaFormateada}","${f.Cliente || ''}","${f.NIT || ''}","${f.Contacto || ''}","${f.Estado || 'Pendiente'}",${f.Subtotal || 0},${f.Abono || 0},${f.Total || 0},${f.Saldo || 0},"${itemsStr}"\n`;
-            });
-
-            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `Facturas_FraelbethGonzalez_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-
-            mostrarToast('✅ Excel exportado correctamente', 'success');
-        }
-
-        function formatearPeso(valor) {
-            return '$' + (valor || 0).toLocaleString('es-CO');
-        }
-
-        function mostrarToast(mensaje, tipo = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = mensaje;
-            toast.className = 'toast';
-            toast.classList.add('show');
-            toast.classList.add(tipo === 'success' ? 'toast--success' : 'toast--error');
-
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').value = hoy;
-            actualizarNumOrden();
-            agregarItem('', 1, 0);
-            document.getElementById('abono').addEventListener('input', calcularSaldo);
-            document.getElementById('searchInput').addEventListener('input', renderizarFacturas);
+function cerrarSesion() {
+    if (confirm('¿Cerrar sesión?')) {
+        document.getElementById('appContent').classList.remove('active');
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('loginPass').value = '';
+        document.getElementById('loginError').style.display = 'none';
+        mostrarToast('Sesión cerrada', 'success');
+    }
+}
+
+// ============================================================
+// LLAMADA A LA API - USA LA CONTRASEÑA FIJA
+// ============================================================
+async function llamarAPI(accion, data = null, numOrden = null) {
+    try {
+        const payload = {
+            accion: accion,
+            password: CONTRASENA, // <-- Usa la contraseña fija
+            data: data,
+            numOrden: numOrden
+        };
+
+        console.log('📤 Enviando petición al proxy...');
+        console.log('🔑 Contraseña enviada: "' + CONTRASENA + '"');
+
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
         });
-    </script>
+
+        const text = await response.text();
+        console.log('📄 Respuesta del proxy:', text);
+
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.warn('⚠️ No es JSON:', text);
+            if (response.status === 200) {
+                return { status: 'success', message: 'Operación completada' };
+            }
+            return { 
+                status: 'error', 
+                message: 'Respuesta no válida del servidor' 
+            };
+        }
+    } catch (error) {
+        console.error('❌ Error en llamada API:', error);
+        return { 
+            status: 'error', 
+            message: 'Error de conexión. Verifica tu internet.' 
+        };
+    }
+}
+
+// ============================================================
+// CARGAR FACTURAS
+// ============================================================
+async function cargarFacturas() {
+    mostrarToast('📥 Cargando facturas...', 'info');
+    try {
+        const resultado = await llamarAPI('obtener');
+
+        if (resultado.status === 'success') {
+            facturas = resultado.data || [];
+            renderizarFacturas();
+            actualizarResumen();
+            actualizarNumOrden();
+            mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
+        } else {
+            if (resultado.message === 'Contraseña incorrecta') {
+                mostrarToast('❌ Contraseña incorrecta. Revisa Apps Script.', 'error');
+                console.log('❌ La contraseña en Apps Script NO es "' + CONTRASENA + '"');
+            } else {
+                mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
+            }
+            facturas = [];
+            renderizarFacturas();
+        }
+    } catch (error) {
+        console.error('❌ Error:', error);
+        mostrarToast('⚠️ Error de conexión. Verifica tu internet.', 'error');
+        facturas = [];
+        renderizarFacturas();
+    }
+}
+
+// ============================================================
+// GENERAR NÚMERO DE ORDEN AUTOMÁTICO
+// ============================================================
+function generarNumOrden() {
+    const year = new Date().getFullYear();
+    const count = facturas.filter(f => {
+        if (!f.NumOrden) return false;
+        return f.NumOrden.includes(`-${year}-`);
+    }).length + 1;
+    return `FG-${year}-${String(count).padStart(3, '0')}`;
+}
+
+function actualizarNumOrden() {
+    document.getElementById('numOrden').value = generarNumOrden();
+}
+
+// ============================================================
+// ITEMS DINÁMICOS
+// ============================================================
+function agregarItem(concepto = '', cantidad = 1, valor = 0) {
+    const container = document.getElementById('itemsContainer');
+    const index = container.querySelectorAll('.service-item').length;
+
+    const div = document.createElement('div');
+    div.className = 'service-item';
+    div.dataset.index = index;
+    div.innerHTML = `
+        <input type="text" class="item-concepto" placeholder="Ej: Configuración de campaña" value="${concepto}" />
+        <input type="number" class="item-cantidad" placeholder="1" value="${cantidad}" min="1" />
+        <input type="number" class="item-valor" placeholder="0" value="${valor}" min="0" step="1000" />
+        <span class="item-total">${formatearPeso(valor * cantidad)}</span>
+        <button type="button" class="btn btn--danger btn--sm" onclick="eliminarItem(this)">✕</button>
+    `;
+
+    div.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', recalcularTodo);
+    });
+
+    container.appendChild(div);
+    recalcularTodo();
+}
+
+function eliminarItem(btn) {
+    const item = btn.closest('.service-item');
+    if (document.querySelectorAll('.service-item').length > 1) {
+        item.remove();
+        recalcularTodo();
+    } else {
+        mostrarToast('Debe haber al menos un item', 'error');
+    }
+}
+
+function recalcularTodo() {
+    const items = document.querySelectorAll('.service-item');
+    let subtotal = 0;
+
+    items.forEach(item => {
+        const cantidad = parseInt(item.querySelector('.item-cantidad').value) || 0;
+        const valor = parseInt(item.querySelector('.item-valor').value) || 0;
+        const total = cantidad * valor;
+        const totalSpan = item.querySelector('.item-total');
+        totalSpan.textContent = formatearPeso(total);
+        subtotal += total;
+    });
+
+    document.getElementById('subtotal').value = formatearPeso(subtotal);
+    document.getElementById('total').value = formatearPeso(subtotal);
+    calcularSaldo();
+}
+
+function calcularSaldo() {
+    const subtotal = parseInt(document.getElementById('subtotal').value.replace(/[^0-9]/g, '')) || 0;
+    const abono = parseInt(document.getElementById('abono').value) || 0;
+    const saldo = Math.max(0, subtotal - abono);
+    document.getElementById('saldo').value = formatearPeso(saldo);
+}
+
+// ============================================================
+// GUARDAR FACTURA
+// ============================================================
+async function guardarFactura(e) {
+    e.preventDefault();
+
+    const itemsValidos = [];
+    document.querySelectorAll('.service-item').forEach(item => {
+        const concepto = item.querySelector('.item-concepto').value.trim();
+        const cantidad = parseInt(item.querySelector('.item-cantidad').value) || 0;
+        const valor = parseInt(item.querySelector('.item-valor').value) || 0;
+        if (concepto && valor > 0) {
+            itemsValidos.push({ concepto, cantidad, valor, total: cantidad * valor });
+        }
+    });
+
+    if (itemsValidos.length === 0) {
+        mostrarToast('❌ Agrega al menos un item con concepto y valor > 0', 'error');
+        return;
+    }
+
+    const numOrden = document.getElementById('numOrden').value.trim();
+    const cliente = document.getElementById('cliente').value.trim();
+
+    if (!cliente) {
+        mostrarToast('❌ El nombre del cliente es obligatorio', 'error');
+        return;
+    }
+
+    const subtotal = itemsValidos.reduce((sum, i) => sum + i.total, 0);
+    const abono = parseInt(document.getElementById('abono').value) || 0;
+
+    const facturaData = {
+        id: document.getElementById('editId').value || '',
+        numOrden: numOrden,
+        fecha: document.getElementById('fecha').value,
+        cliente: cliente,
+        nit: document.getElementById('nit').value.trim(),
+        contacto: document.getElementById('contacto').value.trim(),
+        descripcion: document.getElementById('descripcion').value.trim(),
+        estado: document.getElementById('estado').value,
+        subtotal: subtotal,
+        abono: abono,
+        total: subtotal,
+        saldo: subtotal - abono,
+        items: itemsValidos
+    };
+
+    try {
+        const resultado = await llamarAPI('guardar', facturaData);
+
+        if (resultado.status === 'success') {
+            mostrarToast(`✅ Factura ${numOrden} guardada`, 'success');
+            resetearFormulario();
+            await cargarFacturas();
+        } else {
+            mostrarToast('❌ Error al guardar: ' + (resultado.message || ''), 'error');
+        }
+    } catch (error) {
+        console.error('❌ Error:', error);
+        mostrarToast('⚠️ Error de conexión al guardar', 'error');
+    }
+}
+
+// ============================================================
+// ELIMINAR FACTURA
+// ============================================================
+async function eliminarFactura(numOrden) {
+    if (!confirm(`¿Eliminar la factura ${numOrden}?`)) return;
+
+    try {
+        const resultado = await llamarAPI('eliminar', null, numOrden);
+
+        if (resultado.status === 'success') {
+            mostrarToast(`✅ Factura ${numOrden} eliminada`, 'success');
+            await cargarFacturas();
+        } else {
+            mostrarToast('❌ Error al eliminar', 'error');
+        }
+    } catch (error) {
+        console.error('❌ Error:', error);
+        mostrarToast('⚠️ Error de conexión', 'error');
+    }
+}
+
+// ============================================================
+// EDITAR FACTURA
+// ============================================================
+function editarFactura(numOrden) {
+    const factura = facturas.find(f => f.NumOrden === numOrden);
+    if (!factura) {
+        mostrarToast('❌ Factura no encontrada', 'error');
+        return;
+    }
+
+    editando = true;
+    document.getElementById('formTitle').textContent = '✏️ Editar Orden de Servicio';
+    document.getElementById('editId').value = factura.ID || '';
+    document.getElementById('editNumOrden').value = factura.NumOrden || '';
+    document.getElementById('numOrden').value = factura.NumOrden || '';
+    document.getElementById('fecha').value = factura.Fecha || '';
+    document.getElementById('cliente').value = factura.Cliente || '';
+    document.getElementById('nit').value = factura.NIT || '';
+    document.getElementById('contacto').value = factura.Contacto || '';
+    document.getElementById('descripcion').value = factura.Descripcion || '';
+    document.getElementById('estado').value = factura.Estado || 'Pendiente';
+    document.getElementById('abono').value = factura.Abono || 0;
+
+    const container = document.getElementById('itemsContainer');
+    container.innerHTML = `
+        <div class="service-item-header">
+            <span>Concepto *</span>
+            <span>Cant.</span>
+            <span>Valor Unit.</span>
+            <span>Total</span>
+            <span></span>
+        </div>
+    `;
+
+    const items = factura.items || [];
+    if (items.length === 0) {
+        agregarItem('', 1, 0);
+    } else {
+        items.forEach(item => {
+            agregarItem(item.concepto || '', item.cantidad || 1, item.valor || 0);
+        });
+    }
+
+    document.getElementById('btnCancelar').style.display = 'block';
+    recalcularTodo();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelarEdicion() {
+    resetearFormulario();
+    mostrarToast('Edición cancelada', 'success');
+}
+
+function resetearFormulario() {
+    editando = false;
+    document.getElementById('formTitle').textContent = 'Nueva Orden de Servicio';
+    document.getElementById('editId').value = '';
+    document.getElementById('editNumOrden').value = '';
+    document.getElementById('cliente').value = '';
+    document.getElementById('nit').value = '';
+    document.getElementById('contacto').value = '';
+    document.getElementById('descripcion').value = '';
+    document.getElementById('estado').value = 'Pendiente';
+    document.getElementById('abono').value = '0';
+    document.getElementById('btnCancelar').style.display = 'none';
+
+    const container = document.getElementById('itemsContainer');
+    container.innerHTML = `
+        <div class="service-item-header">
+            <span>Concepto *</span>
+            <span>Cant.</span>
+            <span>Valor Unit.</span>
+            <span>Total</span>
+            <span></span>
+        </div>
+    `;
+    agregarItem('', 1, 0);
+    actualizarNumOrden();
+    document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+    recalcularTodo();
+}
+
+// ============================================================
+// RENDERIZAR FACTURAS
+// ============================================================
+function renderizarFacturas() {
+    const tbody = document.getElementById('tablaFacturas');
+    const empty = document.getElementById('emptyState');
+    const contador = document.getElementById('contadorFacturas');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    let filtradas = facturas;
+
+    if (searchTerm) {
+        filtradas = filtradas.filter(f =>
+            (f.NumOrden || '').toLowerCase().includes(searchTerm) ||
+            (f.Cliente || '').toLowerCase().includes(searchTerm) ||
+            (f.NIT || '').toLowerCase().includes(searchTerm)
+        );
+    }
+
+    contador.textContent = `${filtradas.length} facturas`;
+
+    if (filtradas.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+    }
+
+    empty.style.display = 'none';
+
+    const sorted = [...filtradas].sort((a, b) => {
+        return new Date(b.Fecha) - new Date(a.Fecha);
+    });
+
+    tbody.innerHTML = sorted.map((f) => {
+        const estadoClass = {
+            'Pagado': 'status-badge--paid',
+            'Pendiente': 'status-badge--pending',
+            'Cancelado': 'status-badge--cancelled'
+        } [f.Estado] || '';
+
+        const fechaFormateada = f.Fecha ? new Date(f.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-';
+        const total = f.Total || 0;
+        const saldo = f.Saldo || 0;
+
+        return `
+            <tr>
+                <td><strong>${f.NumOrden || '-'}</strong></td>
+                <td>${fechaFormateada}</td>
+                <td>${f.Cliente || '-'}</td>
+                <td>${formatearPeso(total)}</td>
+                <td>${formatearPeso(saldo)}</td>
+                <td><span class="status-badge ${estadoClass}">${f.Estado || 'Pendiente'}</span></td>
+                <td>
+                    <button class="btn btn--primary btn--sm" onclick="verFactura('${f.NumOrden}')" title="Ver PDF">📄</button>
+                    <button class="btn btn--outline btn--sm" onclick="editarFactura('${f.NumOrden}')" title="Editar">✏️</button>
+                    <button class="btn btn--danger btn--sm" onclick="eliminarFactura('${f.NumOrden}')" title="Eliminar">✕</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// ============================================================
+// ACTUALIZAR RESUMEN
+// ============================================================
+function actualizarResumen() {
+    const total = facturas.reduce((sum, f) => sum + (f.Total || 0), 0);
+    const pagadas = facturas.filter(f => f.Estado === 'Pagado').reduce((sum, f) => sum + (f.Total || 0), 0);
+    const pendientes = facturas.filter(f => f.Estado === 'Pendiente').reduce((sum, f) => sum + (f.Total || 0), 0);
+
+    document.getElementById('resumenTotal').textContent = formatearPeso(total);
+    document.getElementById('resumenPagadas').textContent = formatearPeso(pagadas);
+    document.getElementById('resumenPendientes').textContent = formatearPeso(pendientes);
+}
+
+// ============================================================
+// VER FACTURA - PREPARAR PDF
+// ============================================================
+function verFactura(numOrden) {
+    const factura = facturas.find(f => f.NumOrden === numOrden);
+    if (!factura) {
+        mostrarToast('❌ Factura no encontrada', 'error');
+        return;
+    }
+
+    let items = factura.items || [];
+    if (typeof items === 'string') {
+        try {
+            items = JSON.parse(items);
+        } catch (e) {
+            items = [];
+        }
+    }
+
+    document.getElementById('previewNumOrden').textContent = `N° ${factura.NumOrden || '-'}`;
+    document.getElementById('previewFecha').textContent = `Fecha: ${factura.Fecha ? new Date(factura.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-'}`;
+    document.getElementById('previewCliente').textContent = factura.Cliente || '-';
+    document.getElementById('previewNIT').textContent = factura.NIT || '-';
+    document.getElementById('previewContacto').textContent = factura.Contacto || '-';
+    document.getElementById('previewEstado').textContent = factura.Estado || 'Pendiente';
+    document.getElementById('previewDescripcion').textContent = factura.Descripcion || '-';
+
+    const tbody = document.getElementById('previewItems');
+    if (items.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align:center;color:var(--gray-text);">Sin items</td>
+            </tr>
+        `;
+    } else {
+        tbody.innerHTML = items.map(item => `
+            <tr>
+                <td>${item.concepto || 'Sin concepto'}</td>
+                <td style="text-align:center;">${item.cantidad || 0}</td>
+                <td style="text-align:right;">${formatearPeso(item.valor || 0)}</td>
+                <td style="text-align:right;">${formatearPeso(item.total || 0)}</td>
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('previewSubtotal').textContent = formatearPeso(factura.Subtotal || 0);
+    document.getElementById('previewAbono').textContent = formatearPeso(factura.Abono || 0);
+    document.getElementById('previewSaldo').textContent = formatearPeso(factura.Saldo || 0);
+
+    exportarPDFPersonalizado(factura);
+}
+
+// ============================================================
+// EXPORTAR PDF
+// ============================================================
+function exportarPDF() {
+    if (facturas.length === 0) {
+        mostrarToast('⚠️ No hay facturas para exportar', 'error');
+        return;
+    }
+    const factura = facturas[facturas.length - 1];
+    verFactura(factura.NumOrden);
+}
+
+function exportarPDFPersonalizado(factura) {
+    const preview = document.getElementById('facturaPreview');
+    preview.style.display = 'block';
+
+    const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `OrdenServicio_${factura.NumOrden || 'factura'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+            scale: 2,
+            useCORS: true,
+            letterRendering: true,
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        }
+    };
+
+    html2pdf().set(opt).from(preview).save().then(() => {
+        preview.style.display = 'none';
+        mostrarToast('✅ PDF generado correctamente', 'success');
+    }).catch((err) => {
+        preview.style.display = 'none';
+        mostrarToast('❌ Error al generar PDF', 'error');
+        console.error(err);
+    });
+}
+
+// ============================================================
+// EXPORTAR EXCEL (CSV)
+// ============================================================
+function exportarExcel() {
+    if (facturas.length === 0) {
+        mostrarToast('⚠️ No hay facturas para exportar', 'error');
+        return;
+    }
+
+    let csv = 'N° Orden,Fecha,Cliente,NIT,Contacto,Estado,Subtotal,Abono,Total,Saldo,Items\n';
+
+    facturas.forEach(f => {
+        const fechaFormateada = f.Fecha ? new Date(f.Fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-';
+        let itemsStr = '';
+        try {
+            const items = typeof f.items === 'string' ? JSON.parse(f.items) : (f.items || []);
+            itemsStr = items.map(i => `${i.concepto || ''} (x${i.cantidad || 0})`).join('; ');
+        } catch (e) {
+            itemsStr = '';
+        }
+        csv +=
+            `"${f.NumOrden || ''}","${fechaFormateada}","${f.Cliente || ''}","${f.NIT || ''}","${f.Contacto || ''}","${f.Estado || 'Pendiente'}",${f.Subtotal || 0},${f.Abono || 0},${f.Total || 0},${f.Saldo || 0},"${itemsStr}"\n`;
+    });
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Facturas_FraelbethGonzalez_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+
+    mostrarToast('✅ Excel exportado correctamente', 'success');
+}
+
+// ============================================================
+// UTILIDADES
+// ============================================================
+function formatearPeso(valor) {
+    return '$' + (valor || 0).toLocaleString('es-CO');
+}
+
+function mostrarToast(mensaje, tipo = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensaje;
+    toast.className = 'toast';
+    toast.classList.add('show');
+    toast.classList.add(tipo === 'success' ? 'toast--success' : 'toast--error');
+
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 4000);
+}
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('fecha').value = hoy;
+    actualizarNumOrden();
+    agregarItem('', 1, 0);
+    document.getElementById('abono').addEventListener('input', calcularSaldo);
+    document.getElementById('searchInput').addEventListener('input', renderizarFacturas);
+});
+</script>
 
 </body>
 </html>
