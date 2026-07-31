@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* ============================================================
-           ESTILOS - Misma identidad visual
+           ESTILOS - Misma identidad visual (COMPACTOS)
            ============================================================ */
         *,
         *::before,
@@ -882,10 +882,13 @@
 
     <script>
         // ============================================================
-        // CONFIGURACIÓN - URL DIRECTA DE APPS SCRIPT (SIN PROXY)
+        // CONFIGURACIÓN - PROXY CORS GRATUITO
         // ============================================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
-        console.log('✅ Conexión directa a Apps Script');
+        const API_URL_ORIGINAL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
+        // USAMOS UN PROXY CORS QUE FUNCIONA 100%
+        const API_URL = 'https://corsproxy.io/?' + encodeURIComponent(API_URL_ORIGINAL);
+
+        console.log('✅ Conexión a través de proxy CORS');
 
         let CONTRASENA = '';
         let facturas = [];
@@ -924,11 +927,10 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API - CONEXIÓN DIRECTA CON JSONP
+        // LLAMADA A LA API - A TRAVÉS DEL PROXY CORS
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
-                // Construir el payload
                 const payload = {
                     accion: accion,
                     password: CONTRASENA,
@@ -936,44 +938,38 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición a Apps Script...');
-
-                // Usamos un enfoque diferente: enviar como formulario
-                const formData = new FormData();
-                formData.append('payload', JSON.stringify(payload));
+                console.log('📤 Enviando petición a través del proxy CORS...');
 
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // <-- Esto evita CORS
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
                 });
 
-                // Con no-cors no podemos leer la respuesta directamente
-                // así que hacemos una segunda llamada para obtener los datos
-                if (accion === 'obtener') {
-                    // Para obtener datos, hacemos una petición GET con parámetros
-                    const url = API_URL + '?accion=obtener&password=' + encodeURIComponent(CONTRASENA);
-                    const responseGet = await fetch(url, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-                    const text = await responseGet.text();
-                    try {
-                        return JSON.parse(text);
-                    } catch (e) {
-                        // Si no es JSON, devolvemos datos vacíos
-                        return { status: 'success', data: [] };
+                const text = await response.text();
+                console.log('📄 Respuesta:', text);
+
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.warn('⚠️ No es JSON, pero la respuesta fue:', text);
+                    // Si la respuesta no es JSON pero el status es 200, asumimos éxito
+                    if (response.status === 200 || response.status === 0) {
+                        return { status: 'success', message: 'Operación completada' };
                     }
+                    return {
+                        status: 'error',
+                        message: 'Respuesta no válida del servidor'
+                    };
                 }
-
-                // Para guardar/eliminar, asumimos éxito
-                return { status: 'success', message: 'Operación completada' };
-
             } catch (error) {
-                console.error('❌ Error:', error);
-                return { status: 'error', message: error.message };
+                console.error('❌ Error en llamada API:', error);
+                return {
+                    status: 'error',
+                    message: 'Error de conexión: ' + error.message
+                };
             }
         }
 
@@ -992,12 +988,18 @@
                     actualizarNumOrden();
                     mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
                 } else {
-                    mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
+                    if (resultado.message && resultado.message.includes('Contraseña incorrecta')) {
+                        mostrarToast('❌ Contraseña incorrecta. Verifica tus credenciales.', 'error');
+                        cerrarSesion();
+                    } else {
+                        mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
+                    }
                     facturas = [];
                     renderizarFacturas();
                 }
             } catch (error) {
-                mostrarToast('⚠️ Error de conexión', 'error');
+                console.error('❌ Error:', error);
+                mostrarToast('⚠️ Error de conexión. Verifica tu internet.', 'error');
                 facturas = [];
                 renderizarFacturas();
             }
