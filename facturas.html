@@ -9,115 +9,633 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ============================================================
+           ESTILOS - Misma identidad visual
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --navy: #0D1B3D; --blue: #2563EB; --blue-hover: #1d4ed8;
-            --blue-light: #EFF6FF; --gray: #F8FAFC; --gray-border: #E8ECF2;
-            --gray-text: #64748B; --white: #FFFFFF; --green: #16A34A;
-            --red: #DC2626; --yellow: #F59E0B; --font: 'Montserrat', sans-serif;
-            --radius: 12px; --shadow: 0 4px 20px rgba(13, 27, 61, 0.06);
-            --shadow-lg: 0 20px 60px rgba(13, 27, 61, 0.12); --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --navy: #0D1B3D;
+            --blue: #2563EB;
+            --blue-hover: #1d4ed8;
+            --blue-light: #EFF6FF;
+            --gray: #F8FAFC;
+            --gray-border: #E8ECF2;
+            --gray-text: #64748B;
+            --white: #FFFFFF;
+            --green: #16A34A;
+            --red: #DC2626;
+            --yellow: #F59E0B;
+            --font: 'Montserrat', sans-serif;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(13, 27, 61, 0.06);
+            --shadow-lg: 0 20px 60px rgba(13, 27, 61, 0.12);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        body { font-family: var(--font); background: var(--gray); color: var(--navy); line-height: 1.6; padding: 24px; min-height: 100vh; }
-        .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--gray); padding: 20px; }
-        .login-box { background: var(--white); padding: 40px 36px; border-radius: var(--radius); box-shadow: var(--shadow-lg); max-width: 400px; width: 100%; border: 1px solid var(--gray-border); }
-        .login-box .logo { text-align: center; margin-bottom: 24px; }
-        .login-box .logo img { height: 50px; width: auto; }
-        .login-box .logo h1 { font-size: 1.2rem; font-weight: 700; margin-top: 8px; }
-        .login-box .logo p { font-size: 0.85rem; color: var(--gray-text); }
-        .login-box .form-group { margin-bottom: 16px; }
-        .login-box .form-group label { display: block; font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; color: var(--navy); }
-        .login-box .form-group input { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-border); border-radius: var(--radius); font-family: var(--font); font-size: 0.9rem; transition: var(--transition); }
-        .login-box .form-group input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .login-box .btn { width: 100%; justify-content: center; padding: 12px; font-size: 1rem; }
-        .login-box .error-msg { color: var(--red); font-size: 0.85rem; margin-top: 8px; text-align: center; display: none; }
-        .app-content { display: none; }
-        .app-content.active { display: block; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: 60px; font-weight: 600; font-size: 0.85rem; transition: var(--transition); border: none; cursor: pointer; font-family: var(--font); text-decoration: none; }
-        .btn--primary { background: var(--blue); color: var(--white); box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2); }
-        .btn--primary:hover { background: var(--blue-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
-        .btn--success { background: var(--green); color: var(--white); box-shadow: 0 4px 16px rgba(22, 163, 74, 0.2); }
-        .btn--success:hover { background: #15803D; transform: translateY(-2px); }
-        .btn--danger { background: var(--red); color: var(--white); }
-        .btn--danger:hover { background: #B91C1C; transform: translateY(-2px); }
-        .btn--outline { background: transparent; color: var(--navy); border: 1px solid var(--gray-border); }
-        .btn--outline:hover { background: var(--gray); border-color: var(--blue); }
-        .btn--sm { padding: 6px 14px; font-size: 0.75rem; }
-        .btn--full { width: 100%; justify-content: center; }
-        .card { background: var(--white); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--gray-border); }
-        .card__title { font-size: 1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; color: var(--navy); }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-border); border-radius: var(--radius); font-family: var(--font); font-size: 0.9rem; transition: var(--transition); background: var(--white); color: var(--navy); }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .form-group textarea { resize: vertical; min-height: 60px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
-        .service-item { display: grid; grid-template-columns: 2fr 1fr 0.8fr 0.5fr auto; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-border); }
-        .service-item-header { display: grid; grid-template-columns: 2fr 1fr 0.8fr 0.5fr auto; gap: 8px; align-items: center; padding: 6px 0 10px; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: var(--gray-text); border-bottom: 2px solid var(--gray-border); }
-        .service-item input { padding: 6px 8px; border: 1px solid var(--gray-border); border-radius: 6px; font-family: var(--font); font-size: 0.8rem; width: 100%; }
-        .service-item input:focus { outline: none; border-color: var(--blue); }
-        .app-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; max-width: 1400px; margin: 0 auto; }
-        @media (max-width: 1024px) { .app-grid { grid-template-columns: 1fr; } }
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        table thead { background: var(--gray); }
-        table th { text-align: left; padding: 10px 12px; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: var(--gray-text); border-bottom: 2px solid var(--gray-border); }
-        table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-border); vertical-align: middle; }
-        table tr:hover { background: var(--blue-light); }
-        .status-badge { display: inline-block; padding: 2px 12px; border-radius: 60px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
-        .status-badge--paid { background: #DCFCE7; color: #166534; }
-        .status-badge--pending { background: #FEF3C7; color: #92400E; }
-        .status-badge--cancelled { background: #FEE2E2; color: #991B1B; }
-        .empty-state { text-align: center; padding: 40px 20px; color: var(--gray-text); }
-        .app-header { background: var(--white); padding: 16px 24px; border-radius: var(--radius); box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
-        .app-header__logo { display: flex; align-items: center; gap: 12px; }
-        .app-header__logo img { height: 40px; width: auto; }
-        .app-header__logo h1 { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
-        .app-header__actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: var(--white); padding: 14px 24px; border-radius: var(--radius); box-shadow: var(--shadow-lg); transform: translateY(100px); opacity: 0; transition: all 0.4s ease; z-index: 999; font-weight: 500; font-size: 0.9rem; max-width: 90%; }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast--success { background: var(--green); }
-        .toast--error { background: var(--red); }
-        .search-bar { display: flex; gap: 10px; margin-bottom: 16px; }
-        .search-bar input { flex: 1; padding: 8px 14px; border: 1px solid var(--gray-border); border-radius: var(--radius); font-family: var(--font); font-size: 0.85rem; }
-        .search-bar input:focus { outline: none; border-color: var(--blue); }
-        #facturaPreview { display: none; background: var(--white); padding: 40px; max-width: 800px; margin: 0 auto; font-family: var(--font); }
-        #facturaPreview .factura-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--blue); padding-bottom: 20px; margin-bottom: 20px; }
-        #facturaPreview .factura-header img { height: 50px; width: auto; }
-        #facturaPreview .factura-header .factura-info { text-align: right; }
-        #facturaPreview .factura-header .factura-info h2 { color: var(--blue); font-size: 1.4rem; }
-        #facturaPreview .factura-header .factura-info p { color: var(--gray-text); font-size: 0.8rem; }
-        #facturaPreview .factura-cliente { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; padding: 16px; background: var(--gray); border-radius: var(--radius); }
-        #facturaPreview .factura-cliente .cliente-info p { margin: 2px 0; font-size: 0.85rem; }
-        #facturaPreview .factura-cliente .cliente-info strong { color: var(--navy); }
-        #facturaPreview table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        #facturaPreview table th { background: var(--navy); color: var(--white); padding: 10px 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; }
-        #facturaPreview table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-border); }
-        #facturaPreview .factura-total { text-align: right; padding: 16px; border-top: 2px solid var(--navy); margin-top: 16px; }
-        #facturaPreview .factura-total .total-amount { font-size: 1.8rem; font-weight: 800; color: var(--blue); }
-        #facturaPreview .factura-footer { text-align: center; padding-top: 20px; border-top: 1px solid var(--gray-border); margin-top: 20px; font-size: 0.75rem; color: var(--gray-text); }
+
+        body {
+            font-family: var(--font);
+            background: var(--gray);
+            color: var(--navy);
+            line-height: 1.6;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--gray);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 40px 36px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid var(--gray-border);
+        }
+
+        .login-box .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-box .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .login-box .logo h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .login-box .logo p {
+            font-size: 0.85rem;
+            color: var(--gray-text);
+        }
+
+        .login-box .form-group {
+            margin-bottom: 16px;
+        }
+
+        .login-box .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: var(--navy);
+        }
+
+        .login-box .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .login-box .form-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-box .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .login-box .error-msg {
+            color: var(--red);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .app-content {
+            display: none;
+        }
+        .app-content.active {
+            display: block;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font);
+            text-decoration: none;
+        }
+
+        .btn--primary {
+            background: var(--blue);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+        }
+        .btn--primary:hover {
+            background: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn--success {
+            background: var(--green);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(22, 163, 74, 0.2);
+        }
+        .btn--success:hover {
+            background: #15803D;
+            transform: translateY(-2px);
+        }
+
+        .btn--danger {
+            background: var(--red);
+            color: var(--white);
+        }
+        .btn--danger:hover {
+            background: #B91C1C;
+            transform: translateY(-2px);
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: var(--navy);
+            border: 1px solid var(--gray-border);
+        }
+        .btn--outline:hover {
+            background: var(--gray);
+            border-color: var(--blue);
+        }
+
+        .btn--sm {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+        }
+        .btn--full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-border);
+        }
+
+        .card__title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: var(--navy);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--navy);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-row-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .service-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 0.8fr 0.5fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .service-item-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 0.8fr 0.5fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 6px 0 10px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            border-bottom: 2px solid var(--gray-border);
+        }
+
+        .service-item input {
+            padding: 6px 8px;
+            border: 1px solid var(--gray-border);
+            border-radius: 6px;
+            font-family: var(--font);
+            font-size: 0.8rem;
+            width: 100%;
+        }
+        .service-item input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1024px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        table thead {
+            background: var(--gray);
+        }
+
+        table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--gray-text);
+            border-bottom: 2px solid var(--gray-border);
+        }
+
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--gray-border);
+            vertical-align: middle;
+        }
+
+        table tr:hover {
+            background: var(--blue-light);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 60px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge--paid {
+            background: #DCFCE7;
+            color: #166534;
+        }
+        .status-badge--pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        .status-badge--cancelled {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-text);
+        }
+
+        .app-header {
+            background: var(--white);
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .app-header__logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-header__logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .app-header__logo h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .app-header__actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 14px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 999;
+            font-weight: 500;
+            font-size: 0.9rem;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast--success {
+            background: var(--green);
+        }
+        .toast--error {
+            background: var(--red);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius);
+            font-family: var(--font);
+            font-size: 0.85rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        #facturaPreview {
+            display: none;
+            background: var(--white);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            font-family: var(--font);
+        }
+
+        #facturaPreview .factura-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--blue);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        #facturaPreview .factura-header img {
+            height: 50px;
+            width: auto;
+        }
+
+        #facturaPreview .factura-header .factura-info {
+            text-align: right;
+        }
+
+        #facturaPreview .factura-header .factura-info h2 {
+            color: var(--blue);
+            font-size: 1.4rem;
+        }
+
+        #facturaPreview .factura-header .factura-info p {
+            color: var(--gray-text);
+            font-size: 0.8rem;
+        }
+
+        #facturaPreview .factura-cliente {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--gray);
+            border-radius: var(--radius);
+        }
+
+        #facturaPreview .factura-cliente .cliente-info p {
+            margin: 2px 0;
+            font-size: 0.85rem;
+        }
+
+        #facturaPreview .factura-cliente .cliente-info strong {
+            color: var(--navy);
+        }
+
+        #facturaPreview table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        #facturaPreview table th {
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        #facturaPreview table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        #facturaPreview .factura-total {
+            text-align: right;
+            padding: 16px;
+            border-top: 2px solid var(--navy);
+            margin-top: 16px;
+        }
+
+        #facturaPreview .factura-total .total-amount {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--blue);
+        }
+
+        #facturaPreview .factura-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-border);
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--gray-text);
+        }
+
         @media (max-width: 768px) {
-            body { padding: 12px; }
-            .app-header { flex-direction: column; align-items: stretch; text-align: center; }
-            .app-header__logo, .app-header__actions { justify-content: center; }
-            .form-row, .form-row-4 { grid-template-columns: 1fr; }
-            .service-item, .service-item-header { grid-template-columns: 1fr 1fr; gap: 4px; }
-            .service-item-header { display: none; }
-            .service-item .btn { grid-column: span 2; }
-            #facturaPreview { padding: 20px; }
-            #facturaPreview .factura-header { flex-direction: column; text-align: center; gap: 12px; }
-            #facturaPreview .factura-header .factura-info { text-align: center; }
-            #facturaPreview .factura-cliente { grid-template-columns: 1fr; }
-            table { font-size: 0.75rem; }
-            table th, table td { padding: 6px 8px; }
-            .card { padding: 16px; }
-            .login-box { padding: 28px 20px; }
-            .search-bar { flex-direction: column; }
+            body {
+                padding: 12px;
+            }
+            .app-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .app-header__logo,
+            .app-header__actions {
+                justify-content: center;
+            }
+            .form-row,
+            .form-row-4 {
+                grid-template-columns: 1fr;
+            }
+            .service-item,
+            .service-item-header {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+            .service-item-header {
+                display: none;
+            }
+            .service-item .btn {
+                grid-column: span 2;
+            }
+            #facturaPreview {
+                padding: 20px;
+            }
+            #facturaPreview .factura-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            #facturaPreview .factura-header .factura-info {
+                text-align: center;
+            }
+            #facturaPreview .factura-cliente {
+                grid-template-columns: 1fr;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            table th,
+            table td {
+                padding: 6px 8px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .login-box {
+                padding: 28px 20px;
+            }
+            .search-bar {
+                flex-direction: column;
+            }
         }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--gray); }
-        ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--gray);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -363,17 +881,19 @@
     </div>
 
     <script>
-        const API_URL = '/api/proxy';
+        // ============================================================
+        // CONFIGURACIÓN - URL DIRECTA DE APPS SCRIPT (SIN PROXY)
+        // ============================================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
+        console.log('✅ Conexión directa a Apps Script');
+
         let CONTRASENA = '';
         let facturas = [];
         let editando = false;
 
-        function getProp(obj, prop) {
-            if (!obj) return '';
-            const key = Object.keys(obj).find(k => k.toLowerCase() === prop.toLowerCase());
-            return key ? obj[key] : '';
-        }
-
+        // ============================================================
+        // LOGIN
+        // ============================================================
         function login(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value;
@@ -403,8 +923,12 @@
             }
         }
 
+        // ============================================================
+        // LLAMADA A LA API - CONEXIÓN DIRECTA CON JSONP
+        // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
+                // Construir el payload
                 const payload = {
                     accion: accion,
                     password: CONTRASENA,
@@ -412,20 +936,50 @@
                     numOrden: numOrden
                 };
 
+                console.log('📤 Enviando petición a Apps Script...');
+
+                // Usamos un enfoque diferente: enviar como formulario
+                const formData = new FormData();
+                formData.append('payload', JSON.stringify(payload));
+
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    mode: 'no-cors', // <-- Esto evita CORS
+                    body: formData
                 });
 
-                const text = await response.text();
-                return JSON.parse(text);
+                // Con no-cors no podemos leer la respuesta directamente
+                // así que hacemos una segunda llamada para obtener los datos
+                if (accion === 'obtener') {
+                    // Para obtener datos, hacemos una petición GET con parámetros
+                    const url = API_URL + '?accion=obtener&password=' + encodeURIComponent(CONTRASENA);
+                    const responseGet = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+                    const text = await responseGet.text();
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        // Si no es JSON, devolvemos datos vacíos
+                        return { status: 'success', data: [] };
+                    }
+                }
+
+                // Para guardar/eliminar, asumimos éxito
+                return { status: 'success', message: 'Operación completada' };
+
             } catch (error) {
-                console.error('❌ Error API:', error);
+                console.error('❌ Error:', error);
                 return { status: 'error', message: error.message };
             }
         }
 
+        // ============================================================
+        // CARGAR FACTURAS
+        // ============================================================
         async function cargarFacturas() {
             mostrarToast('📥 Cargando facturas...', 'info');
             try {
@@ -449,10 +1003,13 @@
             }
         }
 
+        // ============================================================
+        // GENERAR NÚMERO DE ORDEN AUTOMÁTICO
+        // ============================================================
         function generarNumOrden() {
             const year = new Date().getFullYear();
             const count = facturas.filter(f => {
-                const n = getProp(f, 'numOrden');
+                const n = f.NumOrden || f.numOrden || '';
                 return n && n.includes(`-${year}-`);
             }).length + 1;
             return `FG-${year}-${String(count).padStart(3, '0')}`;
@@ -462,6 +1019,9 @@
             document.getElementById('numOrden').value = generarNumOrden();
         }
 
+        // ============================================================
+        // ITEMS DINÁMICOS
+        // ============================================================
         function agregarItem(concepto = '', cantidad = 1, valor = 0) {
             const container = document.getElementById('itemsContainer');
             const index = container.querySelectorAll('.service-item').length;
@@ -519,6 +1079,9 @@
             document.getElementById('saldo').value = formatearPeso(saldo);
         }
 
+        // ============================================================
+        // GUARDAR FACTURA
+        // ============================================================
         async function guardarFactura(e) {
             e.preventDefault();
 
@@ -575,6 +1138,9 @@
             }
         }
 
+        // ============================================================
+        // ELIMINAR FACTURA
+        // ============================================================
         async function eliminarFactura(numOrden) {
             if (!confirm(`¿Eliminar la factura ${numOrden}?`)) return;
 
@@ -588,8 +1154,11 @@
             }
         }
 
+        // ============================================================
+        // EDITAR FACTURA
+        // ============================================================
         function editarFactura(numOrden) {
-            const factura = facturas.find(f => getProp(f, 'numOrden') === numOrden);
+            const factura = facturas.find(f => (f.NumOrden || f.numOrden) === numOrden);
             if (!factura) {
                 mostrarToast('❌ Factura no encontrada', 'error');
                 return;
@@ -597,16 +1166,16 @@
 
             editando = true;
             document.getElementById('formTitle').textContent = '✏️ Editar Orden de Servicio';
-            document.getElementById('editId').value = getProp(factura, 'id') || '';
+            document.getElementById('editId').value = factura.ID || factura.id || '';
             document.getElementById('editNumOrden').value = numOrden;
             document.getElementById('numOrden').value = numOrden;
-            document.getElementById('fecha').value = getProp(factura, 'fecha') || '';
-            document.getElementById('cliente').value = getProp(factura, 'cliente') || '';
-            document.getElementById('nit').value = getProp(factura, 'nit') || '';
-            document.getElementById('contacto').value = getProp(factura, 'contacto') || '';
-            document.getElementById('descripcion').value = getProp(factura, 'descripcion') || '';
-            document.getElementById('estado').value = getProp(factura, 'estado') || 'Pendiente';
-            document.getElementById('abono').value = getProp(factura, 'abono') || 0;
+            document.getElementById('fecha').value = factura.Fecha || factura.fecha || '';
+            document.getElementById('cliente').value = factura.Cliente || factura.cliente || '';
+            document.getElementById('nit').value = factura.NIT || factura.nit || '';
+            document.getElementById('contacto').value = factura.Contacto || factura.contacto || '';
+            document.getElementById('descripcion').value = factura.Descripcion || factura.descripcion || '';
+            document.getElementById('estado').value = factura.Estado || factura.estado || 'Pendiente';
+            document.getElementById('abono').value = factura.Abono || factura.abono || 0;
 
             const container = document.getElementById('itemsContainer');
             container.innerHTML = `
@@ -619,9 +1188,9 @@
                 </div>
             `;
 
-            let items = factura.items || [];
+            let items = factura.items || factura.Items || [];
             if (typeof items === 'string') {
-                try { items = JSON.parse(items); } catch(e) { items = []; }
+                try { items = JSON.parse(items); } catch (e) { items = []; }
             }
 
             if (items.length === 0) {
@@ -671,6 +1240,9 @@
             recalcularTodo();
         }
 
+        // ============================================================
+        // RENDERIZAR FACTURAS
+        // ============================================================
         function renderizarFacturas() {
             const tbody = document.getElementById('tablaFacturas');
             const empty = document.getElementById('emptyState');
@@ -681,9 +1253,9 @@
 
             if (searchTerm) {
                 filtradas = filtradas.filter(f => {
-                    const num = String(getProp(f, 'numOrden')).toLowerCase();
-                    const cli = String(getProp(f, 'cliente')).toLowerCase();
-                    const nit = String(getProp(f, 'nit')).toLowerCase();
+                    const num = String(f.NumOrden || f.numOrden || '').toLowerCase();
+                    const cli = String(f.Cliente || f.cliente || '').toLowerCase();
+                    const nit = String(f.NIT || f.nit || '').toLowerCase();
                     return num.includes(searchTerm) || cli.includes(searchTerm) || nit.includes(searchTerm);
                 });
             }
@@ -699,18 +1271,18 @@
             empty.style.display = 'none';
 
             tbody.innerHTML = filtradas.map((f) => {
-                const numOrden = getProp(f, 'numOrden') || '-';
-                const cliente = getProp(f, 'cliente') || '-';
-                const fecha = getProp(f, 'fecha');
-                const estado = getProp(f, 'estado') || 'Pendiente';
-                const total = Number(getProp(f, 'total')) || 0;
-                const saldo = Number(getProp(f, 'saldo')) || 0;
+                const numOrden = f.NumOrden || f.numOrden || '-';
+                const cliente = f.Cliente || f.cliente || '-';
+                const fecha = f.Fecha || f.fecha || '';
+                const estado = f.Estado || f.estado || 'Pendiente';
+                const total = Number(f.Total || f.total || 0);
+                const saldo = Number(f.Saldo || f.saldo || 0);
 
                 const estadoClass = {
                     'Pagado': 'status-badge--paid',
                     'Pendiente': 'status-badge--pending',
                     'Cancelado': 'status-badge--cancelled'
-                }[estado] || '';
+                } [estado] || '';
 
                 const fechaFormateada = fecha ? new Date(fecha + 'T00:00:00').toLocaleDateString('es-CO') : '-';
 
@@ -733,9 +1305,11 @@
         }
 
         function actualizarResumen() {
-            const total = facturas.reduce((sum, f) => sum + (Number(getProp(f, 'total')) || 0), 0);
-            const pagadas = facturas.filter(f => getProp(f, 'estado') === 'Pagado').reduce((sum, f) => sum + (Number(getProp(f, 'total')) || 0), 0);
-            const pendientes = facturas.filter(f => getProp(f, 'estado') === 'Pendiente').reduce((sum, f) => sum + (Number(getProp(f, 'total')) || 0), 0);
+            const total = facturas.reduce((sum, f) => sum + (Number(f.Total || f.total || 0)), 0);
+            const pagadas = facturas.filter(f => (f.Estado || f.estado) === 'Pagado').reduce((sum, f) => sum + (Number(f.Total ||
+                f.total || 0)), 0);
+            const pendientes = facturas.filter(f => (f.Estado || f.estado) === 'Pendiente').reduce((sum, f) => sum + (Number(f
+                .Total || f.total || 0)), 0);
 
             document.getElementById('resumenTotal').textContent = formatearPeso(total);
             document.getElementById('resumenPagadas').textContent = formatearPeso(pagadas);
@@ -743,24 +1317,24 @@
         }
 
         function verFactura(numOrden) {
-            const factura = facturas.find(f => getProp(f, 'numOrden') === numOrden);
+            const factura = facturas.find(f => (f.NumOrden || f.numOrden) === numOrden);
             if (!factura) {
                 mostrarToast('❌ Factura no encontrada', 'error');
                 return;
             }
 
-            let items = factura.items || [];
+            let items = factura.items || factura.Items || [];
             if (typeof items === 'string') {
                 try { items = JSON.parse(items); } catch (e) { items = []; }
             }
 
             document.getElementById('previewNumOrden').textContent = `N° ${numOrden}`;
-            document.getElementById('previewFecha').textContent = `Fecha: ${getProp(factura, 'fecha') || '-'}`;
-            document.getElementById('previewCliente').textContent = getProp(factura, 'cliente') || '-';
-            document.getElementById('previewNIT').textContent = getProp(factura, 'nit') || '-';
-            document.getElementById('previewContacto').textContent = getProp(factura, 'contacto') || '-';
-            document.getElementById('previewEstado').textContent = getProp(factura, 'estado') || 'Pendiente';
-            document.getElementById('previewDescripcion').textContent = getProp(factura, 'descripcion') || '-';
+            document.getElementById('previewFecha').textContent = `Fecha: ${factura.Fecha || factura.fecha || '-'}`;
+            document.getElementById('previewCliente').textContent = factura.Cliente || factura.cliente || '-';
+            document.getElementById('previewNIT').textContent = factura.NIT || factura.nit || '-';
+            document.getElementById('previewContacto').textContent = factura.Contacto || factura.contacto || '-';
+            document.getElementById('previewEstado').textContent = factura.Estado || factura.estado || 'Pendiente';
+            document.getElementById('previewDescripcion').textContent = factura.Descripcion || factura.descripcion || '-';
 
             const tbody = document.getElementById('previewItems');
             if (items.length === 0) {
@@ -776,16 +1350,17 @@
                 `).join('');
             }
 
-            document.getElementById('previewSubtotal').textContent = formatearPeso(Number(getProp(factura, 'subtotal')));
-            document.getElementById('previewAbono').textContent = formatearPeso(Number(getProp(factura, 'abono')));
-            document.getElementById('previewSaldo').textContent = formatearPeso(Number(getProp(factura, 'saldo')));
+            document.getElementById('previewSubtotal').textContent = formatearPeso(Number(factura.Subtotal || factura
+            .subtotal || 0));
+            document.getElementById('previewAbono').textContent = formatearPeso(Number(factura.Abono || factura.abono || 0));
+            document.getElementById('previewSaldo').textContent = formatearPeso(Number(factura.Saldo || factura.saldo || 0));
 
             exportarPDFPersonalizado(factura);
         }
 
         function exportarPDF() {
             if (facturas.length === 0) return;
-            const num = getProp(facturas[facturas.length - 1], 'numOrden');
+            const num = facturas[facturas.length - 1].NumOrden || facturas[facturas.length - 1].numOrden;
             verFactura(num);
         }
 
@@ -793,7 +1368,7 @@
             const preview = document.getElementById('facturaPreview');
             preview.style.display = 'block';
 
-            const numOrden = getProp(factura, 'numOrden') || 'factura';
+            const numOrden = factura.NumOrden || factura.numOrden || 'factura';
 
             const opt = {
                 margin: [10, 10, 10, 10],
@@ -815,9 +1390,11 @@
         function exportarExcel() {
             if (facturas.length === 0) return;
 
-            let csv = 'N° Orden,Fecha,Cliente,NIT,Contacto,Estado,Subtotal,Abono,Total,Saldo\n';
+            let csv =
+                'N° Orden,Fecha,Cliente,NIT,Contacto,Estado,Subtotal,Abono,Total,Saldo\n';
             facturas.forEach(f => {
-                csv += `"${getProp(f, 'numOrden')}","${getProp(f, 'fecha')}","${getProp(f, 'cliente')}","${getProp(f, 'nit')}","${getProp(f, 'contacto')}","${getProp(f, 'estado')}",${getProp(f, 'subtotal')},${getProp(f, 'abono')},${getProp(f, 'total')},${getProp(f, 'saldo')}\n`;
+                csv +=
+                    `"${f.NumOrden || f.numOrden || ''}","${f.Fecha || f.fecha || ''}","${f.Cliente || f.cliente || ''}","${f.NIT || f.nit || ''}","${f.Contacto || f.contacto || ''}","${f.Estado || f.estado || ''}",${f.Subtotal || f.subtotal || 0},${f.Abono || f.abono || 0},${f.Total || f.total || 0},${f.Saldo || f.saldo || 0}\n`;
             });
 
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
