@@ -293,14 +293,134 @@
 
     <script>
         // ============================================================
-        // CONFIGURACIÓN - PROXY EXTERNO
+        // CONFIGURACIÓN - SUPABASE
         // ============================================================
-        const API_URL = 'https://corsproxy.io/?' + encodeURIComponent('https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec');
-        console.log('✅ Proxy externo configurado');
+        const SUPABASE_URL = 'https://bkozroqaibbpdfcwztxa.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_II9sDhrx55JJHkexrZmv8A_tvCUlLx7';
+        console.log('✅ Conectado a Supabase');
 
         let CONTRASENA = '';
         let facturas = [];
         let editando = false;
+
+        // ============================================================
+        // FUNCIÓN PARA LLAMAR A SUPABASE
+        // ============================================================
+        async function llamarSupabase(accion, data = null, numOrden = null) {
+            try {
+                // Obtener todas las facturas
+                if (accion === 'obtener') {
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/facturas?select=*&order=created_at.desc`, {
+                        method: 'GET',
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        const datos = result.map(f => ({
+                            id: f.id,
+                            NumOrden: f.num_orden,
+                            Fecha: f.fecha,
+                            Cliente: f.cliente,
+                            NIT: f.nit || '',
+                            Contacto: f.contacto || '',
+                            Descripcion: f.descripcion || '',
+                            Estado: f.estado || 'Pendiente',
+                            Subtotal: f.subtotal || 0,
+                            Abono: f.abono || 0,
+                            Total: f.total || 0,
+                            Saldo: f.saldo || 0,
+                            items: f.items || []
+                        }));
+                        return { status: 'success', data: datos };
+                    } else {
+                        console.error('Error Supabase:', result);
+                        return { status: 'error', message: result.message || 'Error al obtener facturas' };
+                    }
+                }
+
+                // Guardar o actualizar factura
+                if (accion === 'guardar') {
+                    const payload = {
+                        num_orden: data.numOrden,
+                        fecha: data.fecha,
+                        cliente: data.cliente,
+                        nit: data.nit || '',
+                        contacto: data.contacto || '',
+                        descripcion: data.descripcion || '',
+                        estado: data.estado || 'Pendiente',
+                        subtotal: data.subtotal || 0,
+                        abono: data.abono || 0,
+                        total: data.total || 0,
+                        saldo: data.saldo || 0,
+                        items: data.items || []
+                    };
+
+                    if (data.id) {
+                        const response = await fetch(`${SUPABASE_URL}/rest/v1/facturas?id=eq.${data.id}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.ok) {
+                            return { status: 'success', message: 'Factura actualizada', numOrden: data.numOrden };
+                        } else {
+                            const error = await response.text();
+                            return { status: 'error', message: error };
+                        }
+                    } else {
+                        const response = await fetch(`${SUPABASE_URL}/rest/v1/facturas`, {
+                            method: 'POST',
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.ok) {
+                            return { status: 'success', message: 'Factura guardada', numOrden: data.numOrden };
+                        } else {
+                            const error = await response.text();
+                            return { status: 'error', message: error };
+                        }
+                    }
+                }
+
+                // Eliminar factura
+                if (accion === 'eliminar') {
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/facturas?num_orden=eq.${numOrden}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=minimal'
+                        }
+                    });
+                    if (response.ok) {
+                        return { status: 'success', message: 'Factura eliminada' };
+                    } else {
+                        const error = await response.text();
+                        return { status: 'error', message: error };
+                    }
+                }
+
+                return { status: 'error', message: 'Acción no válida' };
+            } catch (error) {
+                console.error('❌ Error en Supabase:', error);
+                return { status: 'error', message: error.message };
+            }
+        }
 
         // ============================================================
         // LOGIN
@@ -333,38 +453,12 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API
-        // ============================================================
-        async function llamarAPI(accion, data = null, numOrden = null) {
-            try {
-                const payload = { accion: accion, password: CONTRASENA, data: data, numOrden: numOrden };
-                console.log('📤 Enviando petición...');
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const text = await response.text();
-                console.log('📄 Respuesta:', text);
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    if (response.status === 200) return { status: 'success', message: 'Operación completada' };
-                    return { status: 'error', message: 'Respuesta no válida' };
-                }
-            } catch (error) {
-                console.error('❌ Error:', error);
-                return { status: 'error', message: 'Error de conexión: ' + error.message };
-            }
-        }
-
-        // ============================================================
         // CARGAR FACTURAS
         // ============================================================
         async function cargarFacturas() {
             mostrarToast('📥 Cargando facturas...', 'info');
             try {
-                const resultado = await llamarAPI('obtener');
+                const resultado = await llamarSupabase('obtener');
                 if (resultado.status === 'success') {
                     facturas = resultado.data || [];
                     renderizarFacturas();
@@ -372,12 +466,7 @@
                     actualizarNumOrden();
                     mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
                 } else {
-                    if (resultado.message && resultado.message.includes('Contraseña incorrecta')) {
-                        mostrarToast('❌ Contraseña incorrecta. Verifica tus credenciales.', 'error');
-                        cerrarSesion();
-                    } else {
-                        mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
-                    }
+                    mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
                     facturas = [];
                     renderizarFacturas();
                 }
@@ -395,7 +484,7 @@
         function generarNumOrden() {
             const year = new Date().getFullYear();
             const count = facturas.filter(f => {
-                const n = f.NumOrden || f.numOrden || '';
+                const n = f.NumOrden || '';
                 return n && n.includes(`-${year}-`);
             }).length + 1;
             return `FG-${year}-${String(count).padStart(3, '0')}`;
@@ -499,7 +588,7 @@
                 saldo: subtotal - abono,
                 items: itemsValidos
             };
-            const resultado = await llamarAPI('guardar', facturaData);
+            const resultado = await llamarSupabase('guardar', facturaData);
             if (resultado.status === 'success') {
                 mostrarToast(`✅ Factura ${numOrden} guardada`, 'success');
                 resetearFormulario();
@@ -514,7 +603,7 @@
         // ============================================================
         async function eliminarFactura(numOrden) {
             if (!confirm(`¿Eliminar la factura ${numOrden}?`)) return;
-            const resultado = await llamarAPI('eliminar', null, numOrden);
+            const resultado = await llamarSupabase('eliminar', null, numOrden);
             if (resultado.status === 'success') {
                 mostrarToast(`✅ Factura ${numOrden} eliminada`, 'success');
                 await cargarFacturas();
@@ -527,23 +616,23 @@
         // EDITAR FACTURA
         // ============================================================
         function editarFactura(numOrden) {
-            const factura = facturas.find(f => (f.NumOrden || f.numOrden) === numOrden);
+            const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
                 mostrarToast('❌ Factura no encontrada', 'error');
                 return;
             }
             editando = true;
             document.getElementById('formTitle').textContent = '✏️ Editar Orden de Servicio';
-            document.getElementById('editId').value = factura.ID || factura.id || '';
+            document.getElementById('editId').value = factura.id || '';
             document.getElementById('editNumOrden').value = numOrden;
             document.getElementById('numOrden').value = numOrden;
-            document.getElementById('fecha').value = factura.Fecha || factura.fecha || '';
-            document.getElementById('cliente').value = factura.Cliente || factura.cliente || '';
-            document.getElementById('nit').value = factura.NIT || factura.nit || '';
-            document.getElementById('contacto').value = factura.Contacto || factura.contacto || '';
-            document.getElementById('descripcion').value = factura.Descripcion || factura.descripcion || '';
-            document.getElementById('estado').value = factura.Estado || factura.estado || 'Pendiente';
-            document.getElementById('abono').value = factura.Abono || factura.abono || 0;
+            document.getElementById('fecha').value = factura.Fecha || '';
+            document.getElementById('cliente').value = factura.Cliente || '';
+            document.getElementById('nit').value = factura.NIT || '';
+            document.getElementById('contacto').value = factura.Contacto || '';
+            document.getElementById('descripcion').value = factura.Descripcion || '';
+            document.getElementById('estado').value = factura.Estado || 'Pendiente';
+            document.getElementById('abono').value = factura.Abono || 0;
 
             const container = document.getElementById('itemsContainer');
             container.innerHTML = `
@@ -555,7 +644,7 @@
                     <span></span>
                 </div>
             `;
-            let items = factura.items || factura.Items || [];
+            let items = factura.items || [];
             if (typeof items === 'string') {
                 try { items = JSON.parse(items); } catch (e) { items = []; }
             }
@@ -615,9 +704,9 @@
             let filtradas = facturas;
             if (searchTerm) {
                 filtradas = filtradas.filter(f => {
-                    const num = String(f.NumOrden || f.numOrden || '').toLowerCase();
-                    const cli = String(f.Cliente || f.cliente || '').toLowerCase();
-                    const nit = String(f.NIT || f.nit || '').toLowerCase();
+                    const num = String(f.NumOrden || '').toLowerCase();
+                    const cli = String(f.Cliente || '').toLowerCase();
+                    const nit = String(f.NIT || '').toLowerCase();
                     return num.includes(searchTerm) || cli.includes(searchTerm) || nit.includes(searchTerm);
                 });
             }
@@ -629,12 +718,12 @@
             }
             empty.style.display = 'none';
             tbody.innerHTML = filtradas.map((f) => {
-                const numOrden = f.NumOrden || f.numOrden || '-';
-                const cliente = f.Cliente || f.cliente || '-';
-                const fecha = f.Fecha || f.fecha || '';
-                const estado = f.Estado || f.estado || 'Pendiente';
-                const total = Number(f.Total || f.total || 0);
-                const saldo = Number(f.Saldo || f.saldo || 0);
+                const numOrden = f.NumOrden || '-';
+                const cliente = f.Cliente || '-';
+                const fecha = f.Fecha || '';
+                const estado = f.Estado || 'Pendiente';
+                const total = Number(f.Total || 0);
+                const saldo = Number(f.Saldo || 0);
                 const estadoClass = {
                     'Pagado': 'status-badge--paid',
                     'Pendiente': 'status-badge--pending',
@@ -660,9 +749,9 @@
         }
 
         function actualizarResumen() {
-            const total = facturas.reduce((sum, f) => sum + (Number(f.Total || f.total || 0)), 0);
-            const pagadas = facturas.filter(f => (f.Estado || f.estado) === 'Pagado').reduce((sum, f) => sum + (Number(f.Total || f.total || 0)), 0);
-            const pendientes = facturas.filter(f => (f.Estado || f.estado) === 'Pendiente').reduce((sum, f) => sum + (Number(f.Total || f.total || 0)), 0);
+            const total = facturas.reduce((sum, f) => sum + (Number(f.Total || 0)), 0);
+            const pagadas = facturas.filter(f => f.Estado === 'Pagado').reduce((sum, f) => sum + (Number(f.Total || 0)), 0);
+            const pendientes = facturas.filter(f => f.Estado === 'Pendiente').reduce((sum, f) => sum + (Number(f.Total || 0)), 0);
             document.getElementById('resumenTotal').textContent = formatearPeso(total);
             document.getElementById('resumenPagadas').textContent = formatearPeso(pagadas);
             document.getElementById('resumenPendientes').textContent = formatearPeso(pendientes);
@@ -672,22 +761,22 @@
         // VER FACTURA - PDF
         // ============================================================
         function verFactura(numOrden) {
-            const factura = facturas.find(f => (f.NumOrden || f.numOrden) === numOrden);
+            const factura = facturas.find(f => f.NumOrden === numOrden);
             if (!factura) {
                 mostrarToast('❌ Factura no encontrada', 'error');
                 return;
             }
-            let items = factura.items || factura.Items || [];
+            let items = factura.items || [];
             if (typeof items === 'string') {
                 try { items = JSON.parse(items); } catch (e) { items = []; }
             }
             document.getElementById('previewNumOrden').textContent = `N° ${numOrden}`;
-            document.getElementById('previewFecha').textContent = `Fecha: ${factura.Fecha || factura.fecha || '-'}`;
-            document.getElementById('previewCliente').textContent = factura.Cliente || factura.cliente || '-';
-            document.getElementById('previewNIT').textContent = factura.NIT || factura.nit || '-';
-            document.getElementById('previewContacto').textContent = factura.Contacto || factura.contacto || '-';
-            document.getElementById('previewEstado').textContent = factura.Estado || factura.estado || 'Pendiente';
-            document.getElementById('previewDescripcion').textContent = factura.Descripcion || factura.descripcion || '-';
+            document.getElementById('previewFecha').textContent = `Fecha: ${factura.Fecha || '-'}`;
+            document.getElementById('previewCliente').textContent = factura.Cliente || '-';
+            document.getElementById('previewNIT').textContent = factura.NIT || '-';
+            document.getElementById('previewContacto').textContent = factura.Contacto || '-';
+            document.getElementById('previewEstado').textContent = factura.Estado || 'Pendiente';
+            document.getElementById('previewDescripcion').textContent = factura.Descripcion || '-';
             const tbody = document.getElementById('previewItems');
             if (items.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Sin items</td></tr>`;
@@ -701,22 +790,22 @@
                     </tr>
                 `).join('');
             }
-            document.getElementById('previewSubtotal').textContent = formatearPeso(Number(factura.Subtotal || factura.subtotal || 0));
-            document.getElementById('previewAbono').textContent = formatearPeso(Number(factura.Abono || factura.abono || 0));
-            document.getElementById('previewSaldo').textContent = formatearPeso(Number(factura.Saldo || factura.saldo || 0));
+            document.getElementById('previewSubtotal').textContent = formatearPeso(Number(factura.Subtotal || 0));
+            document.getElementById('previewAbono').textContent = formatearPeso(Number(factura.Abono || 0));
+            document.getElementById('previewSaldo').textContent = formatearPeso(Number(factura.Saldo || 0));
             exportarPDFPersonalizado(factura);
         }
 
         function exportarPDF() {
             if (facturas.length === 0) return;
-            const num = facturas[facturas.length - 1].NumOrden || facturas[facturas.length - 1].numOrden;
+            const num = facturas[facturas.length - 1].NumOrden;
             verFactura(num);
         }
 
         function exportarPDFPersonalizado(factura) {
             const preview = document.getElementById('facturaPreview');
             preview.style.display = 'block';
-            const numOrden = factura.NumOrden || factura.numOrden || 'factura';
+            const numOrden = factura.NumOrden || 'factura';
             const opt = {
                 margin: [10, 10, 10, 10],
                 filename: `OrdenServicio_${numOrden}.pdf`,
@@ -737,7 +826,7 @@
             if (facturas.length === 0) return;
             let csv = 'N° Orden,Fecha,Cliente,NIT,Contacto,Estado,Subtotal,Abono,Total,Saldo\n';
             facturas.forEach(f => {
-                csv += `"${f.NumOrden || f.numOrden || ''}","${f.Fecha || f.fecha || ''}","${f.Cliente || f.cliente || ''}","${f.NIT || f.nit || ''}","${f.Contacto || f.contacto || ''}","${f.Estado || f.estado || ''}",${f.Subtotal || f.subtotal || 0},${f.Abono || f.abono || 0},${f.Total || f.total || 0},${f.Saldo || f.saldo || 0}\n`;
+                csv += `"${f.NumOrden || ''}","${f.Fecha || ''}","${f.Cliente || ''}","${f.NIT || ''}","${f.Contacto || ''}","${f.Estado || ''}",${f.Subtotal || 0},${f.Abono || 0},${f.Total || 0},${f.Saldo || 0}\n`;
             });
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
