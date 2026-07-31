@@ -915,14 +915,14 @@
     </div>
 
     <!-- ============================================================
-    SCRIPT - CONEXIÓN DIRECTA A APPS SCRIPT
+    SCRIPT - CON PROXY EN VERCEL
     ============================================================ -->
     <script>
         // ============================================================
-        // CONFIGURACIÓN - URL DIRECTA DE APPS SCRIPT
+        // CONFIGURACIÓN - PROXY EN VERCEL
         // ============================================================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
-        console.log('✅ API URL configurada (conexión directa)');
+        const API_URL = '/api/proxy';
+        console.log('✅ API URL configurada con proxy en Vercel');
 
         // ============================================================
         // VARIABLES GLOBALES
@@ -932,7 +932,7 @@
         let editando = false;
 
         // ============================================================
-        // LOGIN - VALIDA CONTRASEÑA
+        // LOGIN - VALIDA CONTRASEÑA LOCALMENTE
         // ============================================================
         function login(e) {
             e.preventDefault();
@@ -968,7 +968,7 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API - CONEXIÓN DIRECTA
+        // LLAMADA A LA API - A TRAVÉS DEL PROXY
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
@@ -979,10 +979,9 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición DIRECTA a Apps Script...');
+                console.log('📤 Enviando petición al proxy...');
                 console.log('🔑 Contraseña enviada: "' + CONTRASENA + '"');
 
-                // PRIMER INTENTO: Fetch normal
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
@@ -992,53 +991,26 @@
                 });
 
                 const text = await response.text();
-                console.log('📄 Respuesta:', text);
+                console.log('📄 Respuesta del proxy:', text);
 
                 try {
                     return JSON.parse(text);
                 } catch (e) {
-                    // Si la respuesta no es JSON, puede ser un error de CORS
-                    console.warn('⚠️ Respuesta no JSON, intentando con no-cors...');
-                    
-                    // SEGUNDO INTENTO: modo no-cors
-                    const response2 = await fetch(API_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    // Con no-cors no podemos leer la respuesta, pero asumimos éxito
-                    return { status: 'success', message: 'Operación enviada' };
-                }
-
-            } catch (error) {
-                console.error('❌ Error en llamada API:', error);
-                
-                // TERCER INTENTO: con no-cors
-                try {
-                    const response3 = await fetch(API_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            accion: accion,
-                            password: CONTRASENA,
-                            data: data,
-                            numOrden: numOrden
-                        })
-                    });
-                    return { status: 'success', message: 'Operación enviada (no-cors)' };
-                } catch (e3) {
+                    console.warn('⚠️ No es JSON:', text);
+                    if (response.status === 200) {
+                        return { status: 'success', message: 'Operación completada' };
+                    }
                     return {
                         status: 'error',
-                        message: 'Error de conexión: ' + error.message
+                        message: 'Respuesta no válida del servidor'
                     };
                 }
+            } catch (error) {
+                console.error('❌ Error en llamada API:', error);
+                return {
+                    status: 'error',
+                    message: 'Error de conexión: ' + error.message
+                };
             }
         }
 
