@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* ============================================================
-           ESTILOS - Misma identidad visual (COMPACTOS)
+           ESTILOS - Misma identidad visual
            ============================================================ */
         *,
         *::before,
@@ -882,12 +882,18 @@
 
     <script>
         // ============================================================
-        // CONFIGURACIÓN - PROXY CORS GRATUITO
+        // CONFIGURACIÓN - PROXY CORS
         // ============================================================
-        const API_URL_ORIGINAL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
-        // USAMOS UN PROXY CORS QUE FUNCIONA 100%
         const API_URL = 'https://script.google.com/macros/s/AKfycbwF9o7Ea1PVTf0Vd5feAZuxGKtEwppZoT_KldfTvU29lFvqgNILlpr2jIR67Um6PGjuIw/exec';
-            
+        console.log('✅ Conexión a través del proxy');
+
+        // ============================================================
+        // VARIABLES GLOBALES
+        // ============================================================
+        let CONTRASENA = '';
+        let facturas = [];
+        let editando = false;
+
         // ============================================================
         // LOGIN
         // ============================================================
@@ -921,7 +927,7 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API - A TRAVÉS DEL PROXY CORS
+        // LLAMADA A LA API - A TRAVÉS DEL PROXY
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
@@ -932,7 +938,7 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición a través del proxy CORS...');
+                console.log('📤 Enviando petición...');
 
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -948,18 +954,16 @@
                 try {
                     return JSON.parse(text);
                 } catch (e) {
-                    console.warn('⚠️ No es JSON, pero la respuesta fue:', text);
-                    // Si la respuesta no es JSON pero el status es 200, asumimos éxito
-                    if (response.status === 200 || response.status === 0) {
+                    if (response.status === 200) {
                         return { status: 'success', message: 'Operación completada' };
                     }
                     return {
                         status: 'error',
-                        message: 'Respuesta no válida del servidor'
+                        message: 'Respuesta no válida'
                     };
                 }
             } catch (error) {
-                console.error('❌ Error en llamada API:', error);
+                console.error('❌ Error:', error);
                 return {
                     status: 'error',
                     message: 'Error de conexión: ' + error.message
