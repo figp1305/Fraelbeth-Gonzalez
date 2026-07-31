@@ -913,22 +913,29 @@
         let facturas = [];
         let editando = false;
 
-        function login(e) {
-            e.preventDefault();
-            const user = document.getElementById('loginUser').value;
-            const pass = document.getElementById('loginPass').value;
+       function login(e) {
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value;
+    const pass = document.getElementById('loginPass').value;
 
-            CONTRASENA = pass;
+    // === PARA DEPURAR: Mostrar la contraseña que estás escribiendo ===
+    console.log('🔑 Contraseña escrita: "' + pass + '"');
+    console.log('🔑 Longitud: ' + pass.length);
+    
+    // === FORZAR LA CONTRASEÑA CORRECTA (SOLO PARA PRUEBAS) ===
+    // COMENTA LA LÍNEA DE ABAJO Y USA LA DE MÁS ABAJO PARA FORZAR
+    // CONTRASENA = pass;
+    CONTRASENA = 'L1aM4b3L'; // <-- FORZADO
 
-            if (user === 'admin' && pass.length > 0) {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('appContent').classList.add('active');
-                cargarFacturas();
-                mostrarToast('✅ Sesión iniciada correctamente', 'success');
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
+    if (user === 'admin' && pass.length > 0) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('appContent').classList.add('active');
+        cargarFacturas();
+        mostrarToast('✅ Sesión iniciada correctamente', 'success');
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+    }
+}
 
         function cerrarSesion() {
             if (confirm('¿Cerrar sesión?')) {
