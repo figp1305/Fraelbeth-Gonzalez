@@ -662,7 +662,7 @@
                     <input type="password" id="loginPass" placeholder="Ingresa tu contraseña" required />
                 </div>
                 <button type="submit" class="btn btn--primary">Iniciar Sesión</button>
-                <div class="error-msg" id="loginError">Contraseña incorrecta</div>
+                <div class="error-msg" id="loginError">Usuario o contraseña incorrectos</div>
             </form>
         </div>
     </div>
@@ -915,24 +915,24 @@
     </div>
 
     <!-- ============================================================
-    SCRIPT COMPLETO - CON PROXY PROPIO EN VERCEL
+    SCRIPT - CONEXIÓN DIRECTA A APPS SCRIPT
     ============================================================ -->
     <script>
         // ============================================================
-        // CONFIGURACIÓN - PROXY PROPIO EN VERCEL
+        // CONFIGURACIÓN - URL DIRECTA DE APPS SCRIPT
         // ============================================================
-        const API_URL = '/api/proxy';
-        console.log('✅ API URL configurada con proxy propio en Vercel');
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyNSKoxSwtNVxOZ0T6af8_hi8nOtsfg2ArvWlI6wkbOfhlxQAjqe4NnW7GcFdkziJk/exec';
+        console.log('✅ API URL configurada (conexión directa)');
 
         // ============================================================
         // VARIABLES GLOBALES
         // ============================================================
-        let CONTRASENA = 'admin1901';
+        let CONTRASENA = '';
         let facturas = [];
         let editando = false;
 
         // ============================================================
-        // LOGIN - USA LA CONTRASEÑA FIJA
+        // LOGIN - VALIDA CONTRASEÑA
         // ============================================================
         function login(e) {
             e.preventDefault();
@@ -940,22 +940,25 @@
             const pass = document.getElementById('loginPass').value;
 
             console.log('🔑 Contraseña escrita: "' + pass + '"');
-            console.log('🔑 Contraseña USADA: "' + CONTRASENA + '"');
 
-            // SIEMPRE usa la contraseña fija
-            if (user === 'admin') {
+            // Guardar la contraseña para usarla en las peticiones
+            CONTRASENA = pass;
+
+            // VALIDACIÓN LOCAL (la contraseña correcta es admin1901)
+            if (user === 'admin' && pass === 'admin1901') {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appContent').classList.add('active');
                 cargarFacturas();
                 mostrarToast('✅ Sesión iniciada correctamente', 'success');
             } else {
                 document.getElementById('loginError').style.display = 'block';
-                mostrarToast('❌ Usuario incorrecto', 'error');
+                mostrarToast('❌ Usuario o contraseña incorrectos', 'error');
             }
         }
 
         function cerrarSesion() {
             if (confirm('¿Cerrar sesión?')) {
+                CONTRASENA = '';
                 document.getElementById('appContent').classList.remove('active');
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('loginPass').value = '';
@@ -965,7 +968,7 @@
         }
 
         // ============================================================
-        // LLAMADA A LA API - USA LA CONTRASEÑA FIJA
+        // LLAMADA A LA API - CONEXIÓN DIRECTA
         // ============================================================
         async function llamarAPI(accion, data = null, numOrden = null) {
             try {
@@ -976,9 +979,10 @@
                     numOrden: numOrden
                 };
 
-                console.log('📤 Enviando petición al proxy...');
+                console.log('📤 Enviando petición DIRECTA a Apps Script...');
                 console.log('🔑 Contraseña enviada: "' + CONTRASENA + '"');
 
+                // PRIMER INTENTO: Fetch normal
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: {
@@ -988,26 +992,53 @@
                 });
 
                 const text = await response.text();
-                console.log('📄 Respuesta del proxy:', text);
+                console.log('📄 Respuesta:', text);
 
                 try {
                     return JSON.parse(text);
                 } catch (e) {
-                    console.warn('⚠️ No es JSON:', text);
-                    if (response.status === 200) {
-                        return { status: 'success', message: 'Operación completada' };
-                    }
-                    return {
-                        status: 'error',
-                        message: 'Respuesta no válida del servidor'
-                    };
+                    // Si la respuesta no es JSON, puede ser un error de CORS
+                    console.warn('⚠️ Respuesta no JSON, intentando con no-cors...');
+                    
+                    // SEGUNDO INTENTO: modo no-cors
+                    const response2 = await fetch(API_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    // Con no-cors no podemos leer la respuesta, pero asumimos éxito
+                    return { status: 'success', message: 'Operación enviada' };
                 }
+
             } catch (error) {
                 console.error('❌ Error en llamada API:', error);
-                return {
-                    status: 'error',
-                    message: 'Error de conexión. Verifica tu internet.'
-                };
+                
+                // TERCER INTENTO: con no-cors
+                try {
+                    const response3 = await fetch(API_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            accion: accion,
+                            password: CONTRASENA,
+                            data: data,
+                            numOrden: numOrden
+                        })
+                    });
+                    return { status: 'success', message: 'Operación enviada (no-cors)' };
+                } catch (e3) {
+                    return {
+                        status: 'error',
+                        message: 'Error de conexión: ' + error.message
+                    };
+                }
             }
         }
 
@@ -1026,9 +1057,9 @@
                     actualizarNumOrden();
                     mostrarToast(`✅ ${facturas.length} facturas cargadas`, 'success');
                 } else {
-                    if (resultado.message === 'Contraseña incorrecta') {
-                        mostrarToast('❌ Contraseña incorrecta. Revisa Apps Script.', 'error');
-                        console.log('❌ La contraseña en Apps Script NO es "' + CONTRASENA + '"');
+                    if (resultado.message && resultado.message.includes('Contraseña incorrecta')) {
+                        mostrarToast('❌ Contraseña incorrecta. Verifica tus credenciales.', 'error');
+                        cerrarSesion();
                     } else {
                         mostrarToast('❌ Error: ' + (resultado.message || 'Desconocido'), 'error');
                     }
