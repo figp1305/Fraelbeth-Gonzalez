@@ -1,124 +1,106 @@
-// ============================================================
-// 1. INTERSECTION OBSERVER - ANIMACIONES AL SCROLL
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
 
-    const elementos = document.querySelectorAll('.servicio-card, .problema-card, .metodologia-step, .transparencia-item, .faq-item');
+    // ===== 1. HERO SLIDER AUTO & MANUAL =====
+    const slides = document.querySelectorAll('.hero__slide');
+    const dots = document.querySelectorAll('.hero__dot');
+    let currentSlide = 0;
+    let slideInterval;
 
-    const observer = new IntersectionObserver((entries) => {
+    if (slides.length > 0 && dots.length > 0) {
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            let next = (currentSlide + 1) % slides.length;
+            goToSlide(next);
+        }
+
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                goToSlide(idx);
+                resetTimer();
+            });
+        });
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 6000);
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        startTimer();
+    }
+
+    // ===== 2. ACORDEON FAQ =====
+    const faqItems = document.querySelectorAll('.faq__item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq__question');
+        const answer = item.querySelector('.faq__answer');
+
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            // Cerrar otros abiertos
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('active');
+                otherItem.querySelector('.faq__answer').style.maxHeight = null;
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+
+    // ===== 3. MENÚ HAMBURGUESA MOBILE =====
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Cerrar menú al hacer click en un enlace
+        navMenu.querySelectorAll('.nav__link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    }
+
+    // ===== 4. INTERSECTION OBSERVER PARA ANIMACIONES REVEAL =====
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -40px 0px'
-    });
+    }, observerOptions);
 
-    elementos.forEach(el => {
+    document.querySelectorAll('.card, .process__step, .section__header').forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        observer.observe(el);
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease-out';
+        revealObserver.observe(el);
     });
-
-    // ============================================================
-    // 2. MOCKUP - ANIMACIÓN DE BARRAS
-    // ============================================================
-    const barras = document.querySelectorAll('.mockup-phone__chart .bar');
-    setTimeout(() => {
-        barras.forEach(bar => {
-            const altura = bar.style.height;
-            bar.style.height = '0%';
-            setTimeout(() => {
-                bar.style.height = altura;
-                bar.style.transition = 'height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            }, 150);
-        });
-    }, 500);
-
-    // ============================================================
-    // 3. FAQ - CIERRE AUTOMÁTICO
-    // ============================================================
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-        item.addEventListener('toggle', () => {
-            if (item.open) {
-                faqItems.forEach(other => {
-                    if (other !== item && other.open) {
-                        other.open = false;
-                    }
-                });
-            }
-        });
-    });
-
-    // ============================================================
-    // 4. SCROLL SUAVE
-    // ============================================================
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            const target = document.querySelector(targetId);
-            if (target) {
-                e.preventDefault();
-                const offset = 80;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
-            }
-        });
-    });
-
-    // ============================================================
-    // 5. MODAL TÉRMINOS
-    // ============================================================
-    const modal = document.getElementById('termsModal');
-    const openBtn = document.getElementById('openTermsBtn');
-    const closeBtn = document.getElementById('closeTermsBtn');
-    const acceptBtn = document.getElementById('acceptTermsBtn');
-
-    function openModal() {
-        modal.classList.add('active');
-        document.body.classList.add('modal-open');
-        setTimeout(() => {
-            const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            if (focusable) focusable.focus();
-        }, 100);
-    }
-
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-        setTimeout(() => {
-            if (openBtn) openBtn.focus();
-        }, 100);
-    }
-
-    if (openBtn) openBtn.addEventListener('click', openModal);
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (acceptBtn) acceptBtn.addEventListener('click', closeModal);
-
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
-        }
-    });
-
-    // ============================================================
-    // 6. FALLBACK PARA NAVEGADORES ANTIGUOS
-    // ============================================================
-    if (!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.servicio-card, .problema-card, .metodologia-step, .transparencia-item, .faq-item')
-            .forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            });
-    }
 });

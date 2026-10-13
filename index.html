@@ -3,25 +3,50 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fraelbeth Gonzalez | Publicidad sin enredos</title>
-    <meta name="description" content="Configuramos campañas en Facebook, Instagram, Google Ads y TikTok explicándote cada paso para que tengas el control de tu inversión." />
+    <title>Fraelbeth González | Publicidad sin enredos</title>
+    <meta name="description" content="Consigue más clientes por internet sin enredos. Configuramos campañas en Facebook, Instagram, Google y TikTok mientras mantienes el control de tus cuentas." />
+    <link rel="canonical" href="https://fraelbethgonzalez.com/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="flaticon.png" />
+    <link rel="apple-touch-icon" href="flaticon.png" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-    <!-- Open Graph -->
-    <meta property="og:title" content="Fraelbeth Gonzalez | Publicidad sin enredos" />
-    <meta property="og:description" content="Configuramos campañas en Facebook, Instagram, Google Ads y TikTok. Tú decides cuánto invertir y siempre tienes el control." />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Open Graph / Meta Social -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://fraelbethgonzalez.com" />
+    <meta property="og:title" content="Fraelbeth González | Publicidad sin enredos" />
+    <meta property="og:description" content="Configuramos campañas y páginas web para que recibas clientes directamente por WhatsApp." />
     <meta property="og:image" content="https://fraelbethgonzalez.com/og-image.jpg" />
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-weight='800' font-family='Montserrat, sans-serif' fill='%230D1B3D'>FG</text></svg>" />
+    <meta property="og:url" content="https://fraelbethgonzalez.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Fraelbeth González",
+      "url": "https://fraelbethgonzalez.com",
+      "jobTitle": "Especialista en Estrategia Digital y Publicidad",
+      "knowsAbout": ["Publicidad Digital", "Google Ads", "TikTok Ads", "Diseño Web", "Estrategia Digital"],
+      "sameAs": [
+        "https://www.facebook.com/fraelbethgonzalez/",
+        "https://www.instagram.com/fraelbethgonzalez/",
+        "https://www.linkedin.com/in/fraelbethgonzalez/"
+      ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
     <!-- ===== BOTÓN FLOTANTE WHATSAPP ===== -->
-    <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20me%20interesa%20conocer%20más%20sobre%20la%20publicidad%20sin%20enredos."
+    <a href="https://wa.me/573192757931?text=Hola%20Fraelbeth,%20me%20interesa%20conocer%20más%20sobre%20la%20publicidad%20sin%20enredos."
        target="_blank"
        rel="noopener"
        class="whatsapp-float"
@@ -32,679 +57,608 @@
     </a>
 
     <!-- ===== HEADER ===== -->
-    <header class="header">
-        <div class="container header__inner">
-            <a href="#" class="logo" aria-label="Fraelbeth Gonzalez - Inicio">
-                <img 
-                    class="logo__img" 
-                    src="logo-fg.png" 
-                    alt="Fraelbeth Gonzalez" 
-                    width="160" 
-                    height="50"
-                    loading="eager"
-                />
+    <header class="header" id="header">
+        <div class="container header__container">
+            <a href="#" class="logo" aria-label="Inicio">
+                <img src="logo-fg.png" alt="Fraelbeth González" class="logo__img" />
             </a>
-            <nav class="nav">
-                <a href="#transparencia">Transparencia</a>
-                <a href="#clientes">Clientes</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#metodologia">Metodología</a>
-                <a href="#faq">FAQ</a>
+
+            <nav class="nav" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="#inicio" class="nav__link active">Inicio</a></li>
+                    <li><a href="#servicios" class="nav__link">Servicios</a></li>
+                    <li><a href="#proceso" class="nav__link">Cómo trabajamos</a></li>
+                    <li><a href="#sobre-mi" class="nav__link">Sobre mí</a></li>
+                    <li><a href="#resultados" class="nav__link">Resultados</a></li>
+                </ul>
             </nav>
+
+            <a href="https://wa.me/573192757931?text=Hola%20Fraelbeth,%20quiero%20agendar%20una%20asesor%C3%ADa" target="_blank" rel="noopener" class="btn btn--accent header__btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Agendar asesoría
+            </a>
+
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </header>
 
     <main>
+        <!-- ===== HERO SLIDER ===== -->
+        <section class="hero" id="inicio">
+            <div class="hero__slider" id="hero-slider">
+                <!-- Slide 1 -->
+                <div class="hero__slide active">
+                    <div class="container hero__grid">
+                        <div class="hero__content">
+                            <span class="badge">Estrategia Directa</span>
+                            <h1 class="hero__title">Consigue más clientes por internet <span>sin enredos.</span></h1>
+                            <p class="hero__description">Configuramos campañas en Facebook, Instagram, Google y TikTok para que recibas clientes directamente por WhatsApp mientras mantienes el control de tus cuentas y de tu inversión.</p>
+                            
+                            <ul class="hero__benefits">
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Tú mantienes el control de tus cuentas
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Tú decides cuánto invertir
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Acompañamiento personalizado
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Clientes directos a WhatsApp
+                                </li>
+                            </ul>
 
-        <!-- ===== 1. HERO ===== -->
-        <section class="hero" id="hero">
-            <div class="container hero__grid">
-                <div class="hero__content">
-                    <span class="hero__badge">Publicidad sin enredos</span>
-                    <h1 class="hero__title">
-                        La publicidad digital<br />
-                        <span>no tiene que ser complicada</span>
-                    </h1>
-                    <p class="hero__text">
-                        Configuramos y ponemos en marcha tu publicidad digital de forma clara y sencilla. Tú decides cuánto invertir. Nosotros te explicamos y acompañamos.
-                    </p>
-                    <div class="hero__actions">
-                        <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20anunciar%20mi%20negocio%20sin%20enredos.%20¿Me%20puedes%20ayudar?"
-                           target="_blank"
-                           rel="noopener"
-                           class="btn btn--primary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                            Quiero anunciar mi negocio
-                        </a>
-                        <a href="#servicios" class="btn btn--secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-                            Ver servicios
-                        </a>
+                            <div class="hero__actions">
+                                <a href="https://wa.me/573192757931?text=Hola%20Fraelbeth,%20quiero%20anunciar%20mi%20negocio%20sin%20enredos.%20¿Me%20puedes%20ayudar?" target="_blank" rel="noopener" class="btn btn--accent">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                    Agendar asesoría
+                                </a>
+                                <a href="#servicios" class="btn btn--outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                    Ver servicios
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="hero__visual">
+                            <div class="hero__image-wrapper">
+                                <img src="fraelbeth-hero.png" alt="Fraelbeth González analizando campañas" class="hero__img" />
+                                <div class="hero__overlay-fade"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="hero__mockup">
-                    <div class="mockup-phone">
-                        <div class="mockup-phone__screen">
-                            <div class="mockup-phone__content">
-                                <div class="mockup-phone__status-bar"></div>
-                                <div class="mockup-phone__app">
-                                    <div class="mockup-phone__app-header">
-                                        <span>Meta Ads Manager</span>
-                                        <span class="mockup-phone__status-indicator">
-                                            <span class="status-dot"></span>
-                                            Activo
-                                        </span>
-                                    </div>
-                                    <div class="mockup-phone__stats">
-                                        <div class="stat stat--primary">
-                                            <span class="stat__value">1.2K</span>
-                                            <span class="stat__label">Alcance</span>
-                                        </div>
-                                        <div class="stat stat--success">
-                                            <span class="stat__value">47</span>
-                                            <span class="stat__label">Conversiones</span>
-                                        </div>
-                                        <div class="stat stat--info">
-                                            <span class="stat__value">3.2%</span>
-                                            <span class="stat__label">CTR</span>
-                                        </div>
-                                        <div class="stat stat--warning">
-                                            <span class="stat__value">$2.50</span>
-                                            <span class="stat__label">CPC</span>
-                                        </div>
-                                    </div>
-                                    <div class="mockup-phone__chart-container">
-                                        <div class="mockup-phone__chart">
-                                            <div class="bar" style="height:45%"></div>
-                                            <div class="bar" style="height:65%"></div>
-                                            <div class="bar" style="height:85%"></div>
-                                            <div class="bar" style="height:55%"></div>
-                                            <div class="bar" style="height:95%"></div>
-                                            <div class="bar" style="height:75%"></div>
-                                            <div class="bar" style="height:100%"></div>
-                                        </div>
-                                        <div class="mockup-phone__chart-labels">
-                                            <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-                                        </div>
-                                    </div>
-                                    <div class="mockup-phone__cta">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                                        Ver rendimiento
-                                    </div>
-                                </div>
+
+                <!-- Slide 2 -->
+                <div class="hero__slide">
+                    <div class="container hero__grid">
+                        <div class="hero__content">
+                            <span class="badge">Presencia Web Profesional</span>
+                            <h1 class="hero__title">Tu negocio merece una página web que <span>genere resultados.</span></h1>
+                            <p class="hero__description">Creamos páginas web rápidas, modernas y optimizadas para Google para que tus clientes te encuentren y te contacten directamente por WhatsApp.</p>
+                            
+                            <ul class="hero__benefits">
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Responsive (adaptada a celulares)
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    SEO básico para buscadores
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Integración directa a WhatsApp
+                                </li>
+                                <li>
+                                    <span class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    Página 100% tuya y bajo tu control
+                                </li>
+                            </ul>
+
+                            <div class="hero__actions">
+                                <a href="#servicios" class="btn btn--accent">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    Ver planes web
+                                </a>
+                                <a href="https://wa.me/573192757931?text=Hola%20Fraelbeth,%20quiero%20informaci%C3%B3n%20sobre%20dise%C3%B1o%20web" target="_blank" rel="noopener" class="btn btn--outline">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                    Solicitar información
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="hero__visual">
+                            <div class="hero__image-wrapper">
+                                <img src="web-hero-laptop.jpg" alt="Diseño web moderno" class="hero__img" />
+                                <div class="hero__overlay-fade"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Slider Controls -->
+            <div class="hero__controls">
+                <button class="hero__dot active" data-slide="0" aria-label="Ir a Slide 1"></button>
+                <button class="hero__dot" data-slide="1" aria-label="Ir a Slide 2"></button>
+            </div>
         </section>
 
-        <!-- ===== 2. TRANSPARENCIA (Subida) ===== -->
-        <section class="transparencia" id="transparencia">
+        <!-- ===== LOGOS CLIENTES ===== -->
+        <section class="logos-section">
             <div class="container">
-                <h2 class="section-title">Tu negocio. Tus cuentas. Tu inversión.</h2>
-                <p class="section-subtitle">No necesitas entregarnos el control de tu dinero para comenzar a hacer publicidad</p>
-                
-                <div class="transparencia__grid">
-                    <div class="transparencia-item">
-                        <div class="transparencia-item__icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        </div>
-                        <h3>Tus cuentas son tuyas</h3>
-                        <p>Mantienes la propiedad y el control de tus activos digitales.</p>
-                    </div>
-                    <div class="transparencia-item">
-                        <div class="transparencia-item__icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-                        </div>
-                        <h3>Tú decides cuánto invertir</h3>
-                        <p>El presupuesto publicitario lo defines según las posibilidades de tu negocio.</p>
-                    </div>
-                    <div class="transparencia-item">
-                        <div class="transparencia-item__icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        </div>
-                        <h3>Te explicamos sin enredos</h3>
-                        <p>Queremos que entiendas qué estamos haciendo y por qué.</p>
-                    </div>
-                    <div class="transparencia-item">
-                        <div class="transparencia-item__icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <h3>Trabajamos contigo</h3>
-                        <p>Te acompañamos durante el proceso y resolvemos tus dudas.</p>
-                    </div>
-                </div>
-
-                <div class="transparencia__compromiso">
-                    <h3>Sin promesas mágicas</h3>
-                    <p>La publicidad digital puede ayudarte a llegar a más personas, pero los resultados dependen de muchos factores. No prometemos ventas, clientes ni un retorno de inversión específico. Nuestro compromiso es ayudarte a configurar tu publicidad de manera clara, organizada y acorde con los objetivos de tu negocio.</p>
-                </div>
-
-                <!-- NUEVO: Conocimiento compartido -->
-                <div class="transparencia__conocimiento">
-                    <div class="transparencia__conocimiento-icon">
-                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                    </div>
-                    <div>
-                        <h4>Conocimiento compartido</h4>
-                        <p>Creemos que un cliente informado toma mejores decisiones. Por eso, nuestro servicio incluye una breve inducción al sistema para que el control de tu negocio sea 100% tuyo.</p>
+                <p class="logos-section__title">Empresas que han confiado en nuestros servicios</p>
+                <p class="logos-section__subtitle">¿Quieres que tu marca aparezca <strong>aquí</strong>?</p>
+                <div class="carousel-track-container">
+                    <div class="carousel-track">
+                        <div class="logo-item"><img src="logo-picardias.png" alt="Picardías" /></div>
+                        <div class="logo-item"><img src="logo-broaster.png" alt="El Broaster del Chef" /></div>
+                        <div class="logo-item"><span class="text-logo">PanelMóvil</span></div>
+                        <div class="logo-item"><span class="text-logo">Cliente Aliado</span></div>
+                        <div class="logo-item"><img src="logo-picardias.png" alt="Picardías" /></div>
+                        <div class="logo-item"><img src="logo-broaster.png" alt="El Broaster del Chef" /></div>
+                        <div class="logo-item"><span class="text-logo">PanelMóvil</span></div>
+                        <div class="logo-item"><span class="text-logo">Cliente Aliado</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== 3. EL PROBLEMA ===== -->
-        <section class="problema" id="problema">
+        <!-- ===== SERVICIOS ===== -->
+        <section class="services section" id="servicios">
             <div class="container">
-                <h2 class="section-title">Hacer publicidad no debería ser complicado</h2>
-                <p class="section-subtitle">Para muchos emprendedores, entrar al mundo digital genera dudas frecuentes</p>
-                <div class="problema__grid">
-                    <div class="problema-card">
-                        <div class="problema-card__icon">
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-                        </div>
-                        <h4>¿Cuánto invertir?</h4>
-                        <p>Definir el presupuesto adecuado sin experiencia puede ser confuso.</p>
-                    </div>
-                    <div class="problema-card">
-                        <div class="problema-card__icon">
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 2v4"/><path d="M16 2v4"/><path d="M2 10h20"/></svg>
-                        </div>
-                        <h4>¿Qué plataforma usar?</h4>
-                        <p>Elegir entre Meta, Google o TikTok sin conocer sus diferencias.</p>
-                    </div>
-                    <div class="problema-card">
-                        <div class="problema-card__icon">
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-                        </div>
-                        <h4>¿Configurar correctamente?</h4>
-                        <p>Los pasos y opciones técnicas pueden ser abrumadores.</p>
-                    </div>
-                    <div class="problema-card">
-                        <div class="problema-card__icon">
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        </div>
-                        <h4>¿Saber si funciona?</h4>
-                        <p>Interpretar métricas y saber si la campaña está bien configurada.</p>
-                    </div>
-                </div>
-                <div class="problema__respuesta">
-                    <p><strong>La respuesta es simple:</strong> no necesitas ser experto. Nosotros te ayudamos a entender el proceso y configurar tu publicidad para que comiences con claridad.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== 4. CLIENTES / CONFIANZA (NUEVA) ===== -->
-        <section class="clientes" id="clientes">
-            <div class="container">
-                <h2 class="section-title">Negocios que ya impulsan su publicidad conmigo</h2>
-                <p class="section-subtitle">Resultados reales sin enredos</p>
-                
-                <div class="clientes__slider">
-                    <div class="clientes__track">
-                        <!-- Logo 1 -->
-                        <div class="clientes__logo">
-                            <img src="logo-picardias.png" alt="Cliente 1" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;clientes__placeholder&quot;>Logo Cliente 1</div>';" />
-                        </div>
-                        <!-- Logo 2 -->
-                        <div class="clientes__logo">
-                            <img src="logo-broaster.png" alt="Cliente 2" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;clientes__placeholder&quot;>Logo Cliente 2</div>';" />
-                        </div>
-                        <!-- Duplicamos para el efecto infinito -->
-                        <div class="clientes__logo">
-                            <img src="logo-picardias.png" alt="Cliente 1" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;clientes__placeholder&quot;>Logo Cliente 1</div>';" />
-                        </div>
-                        <div class="clientes__logo">
-                            <img src="logo-broaster.png" alt="Cliente 2" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=&quot;clientes__placeholder&quot;>Logo Cliente 2</div>';" />
-                        </div>
-                    </div>
+                <div class="section__header">
+                    <span class="subheading">Servicios</span>
+                    <h2 class="section__title">Soluciones digitales a tu medida</h2>
+                    <p class="section__subtitle">Elige el servicio que necesitas para hacer crecer tu marca sin complicaciones técnicas.</p>
                 </div>
 
-                <div class="clientes__resultados">
-                    <div class="clientes__resultado">
-                        <div class="clientes__resultado-icon">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <div class="services__grid">
+                    <!-- Tarjeta 1 - Publicidad -->
+                    <div class="card service-card service-card--featured">
+                        <div class="featured-badge">Más solicitado</div>
+                        <div class="service-card__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
                         </div>
-                        <div>
-                            <strong>+180%</strong>
-                            <span>en alcance de campañas</span>
-                        </div>
-                    </div>
-                    <div class="clientes__resultado">
-                        <div class="clientes__resultado-icon">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <div>
-                            <strong>+65</strong>
-                            <span>clientes nuevos generados</span>
-                        </div>
-                    </div>
-                    <div class="clientes__resultado">
-                        <div class="clientes__resultado-icon">
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </div>
-                        <div>
-                            <strong>+3 años</strong>
-                            <span>de experiencia configurando</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== 5. SERVICIOS Y PRECIOS ===== -->
-        <section class="servicios" id="servicios">
-            <div class="container">
-                <h2 class="section-title">Nuestros servicios</h2>
-                <p class="section-subtitle">Elige la opción que mejor se adapte a tu negocio</p>
-                <div class="servicios__grid">
-                    
-                    <!-- 1. Configuración Inicial -->
-                    <article class="servicio-card">
-                        <div class="servicio-card__header">
-                            <span class="servicio-card__badge">Inicial</span>
-                            <span class="servicio-card__price">$100.000</span>
-                            <span class="servicio-card__period">Pago único</span>
-                        </div>
-                        <div class="servicio-card__icon">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="M8 2v4M16 2v4M2 10h20"/>
-                                <circle cx="8" cy="14" r="1.5" fill="#2563EB" stroke="none"/>
-                                <circle cx="16" cy="14" r="1.5" fill="#2563EB" stroke="none"/>
-                            </svg>
-                        </div>
-                        <h3>Configuración inicial</h3>
-                        <p>Prepara tu estructura digital para comenzar a hacer publicidad.</p>
-                        <ul class="servicio-card__features">
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Configuración de Facebook e Instagram
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Vinculación entre cuentas
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Vinculación con WhatsApp Business
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Configuración de activos publicitarios
-                            </li>
+                        <h3 class="service-card__title">Publicidad Digital</h3>
+                        <p class="service-card__desc">Configuramos y optimizamos tus campañas en las plataformas de mayor tráfico.</p>
+                        <ul class="service-card__list">
+                            <li>Facebook Ads</li>
+                            <li>Instagram Ads</li>
+                            <li>Google Ads</li>
+                            <li>TikTok Ads</li>
                         </ul>
-                        <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20la%20Configuración%20Inicial%20de%20$100.000"
-                           target="_blank"
-                           rel="noopener"
-                           class="btn btn--primary btn--full">Lo quiero</a>
-                    </article>
+                        <p class="service-card__note">Te enseñamos a utilizar la herramienta</p>
+                        <div class="service-card__footer">
+                            <span class="price">Desde $150.000</span>
+                            <a href="https://wa.me/573192757931?text=Hola,%20me%20interesa%20el%20servicio%20de%20Publicidad%20Digital" target="_blank" rel="noopener" class="btn-arrow" aria-label="Más información">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </a>
+                        </div>
+                    </div>
 
-                    <!-- 2. Configuración de Campaña (MÁS COMPRADO) -->
-                    <article class="servicio-card servicio-card--popular">
-                        <div class="servicio-card__badge--popular">Más comprado</div>
-                        <div class="servicio-card__header">
-                            <span class="servicio-card__badge">Campaña</span>
-                            <span class="servicio-card__price">$150.000</span>
-                            <span class="servicio-card__period">Pago único</span>
+                    <!-- Tarjeta 2 - Diseño Web (Popular) -->
+                    <div class="card service-card service-card--featured">
+                        <div class="featured-badge">Más solicitado</div>
+                        <div class="service-card__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                         </div>
-                        <div class="servicio-card__icon">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="M17 17l4 4"/>
-                                <path d="M8 11h6"/>
-                                <path d="M11 8v6"/>
-                            </svg>
-                        </div>
-                        <h3>Configuración de campaña</h3>
-                        <p>Configuramos tu primera campaña en Meta, Google o TikTok.</p>
-                        <ul class="servicio-card__features">
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Análisis inicial del negocio
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Definición del objetivo de campaña
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Configuración de público o palabras clave
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Acompañamiento durante el proceso
-                            </li>
+                        <h3 class="service-card__title">Diseño Web</h3>
+                        <p class="service-card__desc">Sitios web de alta conversión optimizados para buscadores y dispositivos móviles.</p>
+                        <ul class="service-card__list">
+                            <li>Landing Pages</li>
+                            <li>Webs Corporativas</li>
+                            <li>Portafolios</li>
+                            <li>Webs para Franquicias</li>
                         </ul>
-                        <p class="servicio-card__note">La inversión publicitaria se paga directamente a la plataforma</p>
-                        <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20la%20Configuración%20de%20Campaña%20de%20$150.000"
-                           target="_blank"
-                           rel="noopener"
-                           class="btn btn--primary btn--full">Lo quiero</a>
-                    </article>
+                        <p class="service-card__note">No incluye dominio ni hosting</p>
+                        <div class="service-card__footer">
+                            <span class="price">Desde $350.000</span>
+                            <a href="https://wa.me/573192757931?text=Hola,%20me%20interesa%20el%20servicio%20de%20Dise%C3%B1o%20Web" target="_blank" rel="noopener" class="btn-arrow" aria-label="Más información">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </a>
+                        </div>
+                    </div>
 
-                    <!-- 3. Plan Crecimiento -->
-                    <article class="servicio-card">
-                        <div class="servicio-card__header">
-                            <span class="servicio-card__badge">Crecimiento</span>
-                            <span class="servicio-card__price">$250.000</span>
-                            <span class="servicio-card__period">Pago único</span>
+                    <!-- Tarjeta 3 - Contenido -->
+                    <div class="card service-card">
+                        <div class="service-card__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
                         </div>
-                        <div class="servicio-card__icon">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                <polyline points="17 6 23 6 23 12"/>
-                            </svg>
-                        </div>
-                        <h3>Plan crecimiento</h3>
-                        <p>Estrategia publicitaria en hasta 2 plataformas simultáneas.</p>
-                        <ul class="servicio-card__features">
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Análisis y definición de objetivos
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Configuración en 2 plataformas
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Estrategia publicitaria inicial
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Recomendaciones estratégicas
-                            </li>
+                        <h3 class="service-card__title">Gestión de Contenido</h3>
+                        <p class="service-card__desc">Diseño de piezas visuales estratégicas para mantener tu marca activa y atractiva.</p>
+                        <ul class="service-card__list">
+                            <li>Diseño gráfico publicitario</li>
+                            <li>Posts para Redes</li>
+                            <li>Reels dinámicos</li>
+                            <li>Historias interactivas</li>
                         </ul>
-                        <p class="servicio-card__note">La inversión publicitaria se paga directamente a la plataforma</p>
-                        <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20el%20Plan%20Crecimiento%20de%20$250.000"
-                           target="_blank"
-                           rel="noopener"
-                           class="btn btn--primary btn--full">Lo quiero</a>
-                    </article>
-
-                    <!-- 4. Plan de Contenido -->
-                    <article class="servicio-card">
-                        <div class="servicio-card__header">
-                            <span class="servicio-card__badge">Contenido</span>
-                            <span class="servicio-card__price">$350.000</span>
-                            <span class="servicio-card__period">Mensual</span>
+                        <p class="service-card__note">Cotiza tu plan personalizado</p>
+                        <div class="service-card__footer">
+                            <span class="price">Cotizar plan</span>
+                            <a href="https://wa.me/573192757931?text=Hola,%20me%20interesa%20el%20servicio%20de%20Gesti%C3%B3n%20de%20Contenido" target="_blank" rel="noopener" class="btn-arrow" aria-label="Más información">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </a>
                         </div>
-                        <div class="servicio-card__icon">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="M8 12h8"/>
-                                <path d="M8 8h6"/>
-                                <path d="M8 16h4"/>
-                            </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CÓMO TRABAJAMOS ===== -->
+        <section class="process section" id="proceso">
+            <div class="container">
+                <div class="section__header">
+                    <span class="subheading">Paso a paso</span>
+                    <h2 class="section__title">Un proceso simple, sin enredos</h2>
+                    <p class="section__subtitle">Transparencia total desde el primer contacto hasta el seguimiento de tus resultados.</p>
+                </div>
+
+                <div class="process__steps">
+                    <div class="process__step">
+                        <div class="process__number">01</div>
+                        <h4>Agendamos una reunión</h4>
+                        <p>Nos conocemos y conversamos sobre los objetivos de tu negocio.</p>
+                    </div>
+
+                    <div class="process__step">
+                        <div class="process__number">02</div>
+                        <h4>Analizamos tu negocio</h4>
+                        <p>Evaluamos tu presencia digital actual y detectamos oportunidades.</p>
+                    </div>
+
+                    <div class="process__step">
+                        <div class="process__number">03</div>
+                        <h4>Configuramos la solución</h4>
+                        <p>Preparamos tus campañas o sitio web listo para recibir clientes.</p>
+                    </div>
+
+                    <div class="process__step">
+                        <div class="process__number">04</div>
+                        <h4>Te capacitamos</h4>
+                        <p>Te enseñamos a revisar tus cuentas y entender tus métricas clave.</p>
+                    </div>
+
+                    <div class="process__step">
+                        <div class="process__number">05</div>
+                        <h4>Realizamos seguimiento</h4>
+                        <p>Acompañamos el rendimiento para garantizar un crecimiento continuo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOBRE MÍ ===== -->
+        <section class="about section" id="sobre-mi">
+            <div class="container about__grid">
+                <div class="about__visual">
+                    <div class="about__blob-container">
+                        <img src="fraelbeth-perfil.jpeg" alt="Fraelbeth González" class="about__img" />
+                    </div>
+                </div>
+
+                <div class="about__content">
+                    <span class="subheading">Sobre mí</span>
+                    <h2 class="about__title">Hola, soy Fraelbeth González</h2>
+                    <p class="about__text">Ayudo a emprendedores, negocios y marcas a utilizar herramientas digitales de forma sencilla, manteniendo siempre el control de sus cuentas, activos digitales e inversión publicitaria.</p>
+
+                    <div class="about__tags">
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Publicidad Digital
+                        </span>
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Google Ads
+                        </span>
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            TikTok Ads
+                        </span>
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Diseño Web
+                        </span>
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Estrategia Digital
+                        </span>
+                        <span class="tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            Capacitación
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== RESULTADOS ===== -->
+        <section class="results section" id="resultados">
+            <div class="container">
+                <div class="section__header">
+                    <span class="subheading">Métricas</span>
+                    <h2 class="section__title">Resultados y Casos de Éxito</h2>
+                    <p class="section__subtitle">Impacto real logrado en diferentes proyectos y marcas.</p>
+                </div>
+
+                <div class="results__grid">
+                    <div class="card result-card">
+                        <span class="result-card__stat">+50</span>
+                        <h4>Campañas Publicitarias</h4>
+                        <p>Configuradas y optimizadas con éxito en Meta, Google y TikTok.</p>
+                    </div>
+
+                    <div class="card result-card">
+                        <span class="result-card__stat">+99</span>
+                        <h4>Consultas & Leads</h4>
+                        <p>Prospectos calificados redirigidos directamente a WhatsApp.</p>
+                    </div>
+
+                    <div class="card result-card">
+                        <span class="result-card__stat">+6</span>
+                        <h4>Sitios Web Publicados</h4>
+                        <p>Landing pages y webs corporativas rápidas e intuitivas.</p>
+                    </div>
+
+                    <div class="card result-card">
+                        <span class="result-card__stat">+30</span>
+                        <h4>Procesos Implementados</h4>
+                        <p>Negocios capacitados para gestionar su propia inversión.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TESTIMONIOS ===== -->
+        <section class="testimonials section" id="testimonios">
+            <div class="container">
+                <div class="section__header">
+                    <span class="subheading">Opiniones</span>
+                    <h2 class="section__title">Lo que dicen nuestros clientes</h2>
+                </div>
+
+                <div class="testimonials__slider" id="testimonials-slider">
+                    <div class="testimonials__track">
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"Gracias al acompañamiento entendimos la publicidad digital y comenzamos a recibir clientes por WhatsApp constantemente."</p>
+                            <span class="testimonial-card__author">Picardías</span>
                         </div>
-                        <h3>Plan de contenido</h3>
-                        <p>Mantén tus redes activas con contenido profesional para Facebook e Instagram.</p>
-                        <ul class="servicio-card__features">
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                3 publicaciones semanales
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Diseño y redacción de copies
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Gestión de comentarios y mensajes
-                            </li>
-                            <li>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                                Planificación básica de contenido
-                            </li>
-                        </ul>
-                        <p class="servicio-card__note">TikTok y otras plataformas se cotizan por separado</p>
-                        <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20el%20Plan%20de%20Contenido%20de%20$350.000"
-                           target="_blank"
-                           rel="noopener"
-                           class="btn btn--primary btn--full">Lo quiero</a>
-                    </article>
 
-                </div>
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"La página web quedó moderna, rápida y muy funcional. Nuestros clientes nos contactan mucho más fácil ahora."</p>
+                            <span class="testimonial-card__author">PanelMóvil</span>
+                        </div>
 
-                <!-- NUEVO: Valor Agregado -->
-                <div class="servicios__valor">
-                    <div class="servicios__valor-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                    <div>
-                        <strong>Mucho más que una configuración</strong>
-                        <p>Al terminar, no solo tendrás anuncios rodando; tendrás el conocimiento básico para leer tus métricas y entender en qué se está invirtiendo cada peso.</p>
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"Excelente asesoría y claridad en todo el proceso. Nos dio la seguridad de manejar nuestro propio presupuesto."</p>
+                            <span class="testimonial-card__author">El Broaster del Chef</span>
+                        </div>
+
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"Pudimos lanzar nuestras promociones rápidamente y sin intermediarios complicados. Súper recomendado."</p>
+                            <span class="testimonial-card__author">Marca Aliada</span>
+                        </div>
+
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"La transparencia con las cuentas publicitarias marca totalmente la diferencia en comparación con otras agencias."</p>
+                            <span class="testimonial-card__author">Emprendimiento Local</span>
+                        </div>
+
+                        <div class="card testimonial-card">
+                            <div class="stars">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <p class="testimonial-card__text">"Nos capacitó desde cero y ahora entendemos en qué estamos invirtiendo cada dólar de publicidad."</p>
+                            <span class="testimonial-card__author">Negocio Gastronómico</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== 6. METODOLOGÍA ===== -->
-        <section class="metodologia" id="metodologia">
+        <!-- ===== FAQ ===== -->
+        <section class="faq section" id="faq">
+            <div class="container container--skinny">
+                <div class="section__header">
+                    <span class="subheading">Dudas</span>
+                    <h2 class="section__title">Preguntas Frecuentes</h2>
+                </div>
+
+                <div class="faq__list">
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿La inversión publicitaria está incluida en tus honorarios?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>No. El presupuesto de publicidad se paga directamente a la plataforma (Meta, Google o TikTok) con tu tarjeta de crédito o débito. Mis honorarios cubren la configuración, estrategia y optimización.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿Pierdo acceso a mis cuentas en algún momento?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>Nunca. Tú mantienes la propiedad absoluta de tus páginas, cuentas publicitarias y píxeles. Yo trabajo mediante accesos de administrador o socio comercial.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿También diseñan páginas web?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>Sí, diseñamos Landing Pages, Webs Corporativas y Portafolios rápidos, adaptados a celulares y optimizados para Google.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿Trabajan con Google Ads y TikTok Ads?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>Sí, gestionamos campañas en Meta (Facebook e Instagram), Google Ads y TikTok Ads según el perfil de tu cliente ideal.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿La página web incluye dominio?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>No. Te asesoramos para que compres tu propio dominio (ej. .com) a tu nombre, garantizando que sea 100% tuyo.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿La página web incluye hosting?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>No. Te guiamos en el registro del hosting más conveniente o desplegamos en plataformas de alta velocidad como Vercel o Netlify.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item">
+                        <button class="faq__question">
+                            <span>¿Puedo solicitar capacitación para mi equipo?</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            </span>
+                        </button>
+                        <div class="faq__answer">
+                            <p>¡Por supuesto! Ofrecemos sesiones personalizadas para capacitarte a ti o a tu personal en la gestión básica de campañas y respuestas a clientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA FINAL ===== -->
+        <section class="cta section" id="contacto">
             <div class="container">
-                <h2 class="section-title">Metodología de trabajo</h2>
-                <p class="section-subtitle">Simple, claro y sin enredos</p>
-                <div class="metodologia__grid">
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">01</span>
-                        <h4>Cuéntanos sobre tu negocio</h4>
-                        <p>Nos compartes qué haces, qué vendes y qué quieres lograr.</p>
-                    </div>
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">02</span>
-                        <h4>Analizamos tu necesidad</h4>
-                        <p>Revisamos tu objetivo y te orientamos sobre el servicio ideal.</p>
-                    </div>
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">03</span>
-                        <h4>Eliges tu servicio</h4>
-                        <p>Seleccionas la opción que mejor se adapte a tu negocio.</p>
-                    </div>
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">04</span>
-                        <h4>Organizamos la información</h4>
-                        <p>Te hacemos preguntas clave para preparar el trabajo.</p>
-                    </div>
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">05</span>
-                        <h4>Configuramos y te enseñamos</h4>
-                        <p>No solo apretamos botones. Hacemos la configuración contigo y te explicamos cómo funciona la plataforma para que entiendas tu publicidad y nadie te eche cuentos.</p>
-                    </div>
-                    <div class="metodologia-step">
-                        <span class="metodologia-step__number">06</span>
-                        <h4>Tú mantienes el control</h4>
-                        <p>Tus cuentas y activos digitales continúan siendo tuyos.</p>
-                    </div>
+                <div class="cta__card">
+                    <h2 class="cta__title">¿Listo para impulsar tu negocio?</h2>
+                    <p class="cta__text">Hablemos sobre tu proyecto y encontremos la mejor estrategia digital para ti.</p>
+                    <a href="https://wa.me/573192757931?text=Hola%20Fraelbeth,%20quiero%20anunciar%20mi%20negocio%20sin%20enredos.%20¿Me%20puedes%20ayudar?" target="_blank" rel="noopener" class="btn btn--accent btn--lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                        Hablar por WhatsApp
+                    </a>
                 </div>
             </div>
         </section>
-
-        <!-- ===== 7. FAQ ===== -->
-        <section class="faq" id="faq">
-            <div class="container">
-                <h2 class="section-title">Preguntas frecuentes</h2>
-                <p class="section-subtitle">Resolvemos tus dudas</p>
-                <div class="faq__grid">
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿La inversión publicitaria está incluida?</summary>
-                        <p class="faq-item__answer">No. El valor de nuestros servicios corresponde al trabajo de configuración y acompañamiento. La inversión publicitaria se paga directamente a Meta, Google o TikTok.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿Tengo que entregar mis cuentas?</summary>
-                        <p class="faq-item__answer">No. Tú mantienes la propiedad y el control de tus cuentas. Cuando sea necesario, podrás otorgar los permisos correspondientes o recibir acompañamiento remoto.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿Puedo elegir dónde hacer publicidad?</summary>
-                        <p class="faq-item__answer">Sí. Dependiendo de tus objetivos, puedes contratar la configuración en Meta Ads, Google Ads o TikTok Ads. También puedes elegir el Plan Crecimiento para trabajar en 2 plataformas.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿Garantizan ventas?</summary>
-                        <p class="faq-item__answer">No. Ninguna campaña puede garantizar un número específico de ventas o clientes. Nuestro trabajo consiste en ayudarte a configurar correctamente la campaña.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿Qué pasa si no sé qué plataforma elegir?</summary>
-                        <p class="faq-item__answer">No te preocupes. Podemos orientarte según tu negocio, producto o servicio y objetivo publicitario.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿El Plan de Contenido incluye TikTok?</summary>
-                        <p class="faq-item__answer">No. El Plan de Contenido está diseñado exclusivamente para Facebook e Instagram. Si deseas trabajar TikTok, podemos preparar una propuesta adicional.</p>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question">¿Puedo contratar publicidad y contenido al mismo tiempo?</summary>
-                        <p class="faq-item__answer">Sí. Puedes contratar la configuración de una campaña publicitaria y adicionalmente el Plan de Contenido, según las necesidades de tu negocio.</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== 8. CTA FINAL ===== -->
-        <section class="cta-final" id="contacto">
-            <div class="container">
-                <h2>¿Listo para comenzar?</h2>
-                <p>No necesitas saberlo todo para empezar. Cuéntanos sobre tu negocio y te ayudaremos a encontrar la mejor opción.</p>
-                <a href="https://wa.me/573227939508?text=Hola%20Fraelbeth,%20quiero%20anunciar%20mi%20negocio%20sin%20enredos.%20¿Me%20puedes%20ayudar?"
-                   target="_blank"
-                   rel="noopener"
-                   class="btn btn--whatsapp">
-                    <svg width="22" height="22" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157z"/></svg>
-                    Escríbeme al WhatsApp
-                </a>
-            </div>
-        </section>
-
     </main>
 
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
-        <div class="container footer__inner">
-            <div class="footer__brand">
-                <a href="#" class="logo" aria-label="Fraelbeth Gonzalez - Inicio">
-                    <img 
-                        class="logo__img" 
-                        src="logo-fg.png" 
-                        alt="Fraelbeth Gonzalez" 
-                        width="140" 
-                        height="44"
-                        loading="eager"
-                    />
-                </a>
-                <span class="footer__tagline">Publicidad digital · Meta Ads · Google Ads · TikTok Ads</span>
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <img src="logo-fg-b.png" alt="Fraelbeth González" class="logo__img" />
+                </div>
+
+                <div class="footer__socials">
+                    <a href="https://www.facebook.com/fraelbethgonzalez/" target="_blank" rel="noopener" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/fraelbethgonzalez/" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@fraelbethgonzalez" target="_blank" rel="noopener" aria-label="TikTok">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    </a>
+                    <a href="https://wa.me/573192757931" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    </a>
+                </div>
             </div>
-            <div class="footer__social">
-                <a href="https://www.instagram.com/fraelbethgonzalez/" target="_blank" rel="noopener" aria-label="Instagram">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5"/>
-                        <circle cx="12" cy="12" r="5"/>
-                        <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
-                    </svg>
-                </a>
-                <a href="https://www.facebook.com/fraelbethgonzalez/" target="_blank" rel="noopener" aria-label="Facebook">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                    </svg>
-                </a>
-                <a href="https://www.tiktok.com/@fraelbeth" target="_blank" rel="noopener" aria-label="TikTok">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
-                    </svg>
-                </a>
-            </div>
-            <div class="footer__bottom">
-                <p class="footer__copy">
-                    &copy; 2026 Fraelbeth Gonzalez. Todos los derechos reservados.
-                    <button class="terms-link" id="openTermsBtn">Términos y condiciones</button>
-                </p>
-                <a href="facturas.html" class="admin-link" title="Acceso al sistema de facturación">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                    Panel
-                </a>
+
+            <div class="footer__copyright">
+                <p>&copy; 2026 Fraelbeth González. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
-
-    <!-- ===== MODAL TÉRMINOS ===== -->
-    <div class="modal-overlay" id="termsModal" aria-hidden="true">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
-            <button class="modal__close" id="closeTermsBtn" aria-label="Cerrar">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-            
-            <h2 id="termsTitle" class="modal__title">Términos y condiciones del servicio</h2>
-            <p class="modal__subtitle">Fraelbeth González – Publicidad sin enredos</p>
-
-            <div class="modal__content">
-                <p class="modal__intro">Al realizar el pago correspondiente, el cliente declara que ha leído, comprendido y acepta los siguientes términos y condiciones:</p>
-
-                <div class="terms-section">
-                    <h3>Forma de pago</h3>
-                    <p>Para iniciar cualquier servicio, el cliente deberá realizar el pago acordado previamente. En los servicios de pago único, el valor deberá ser cancelado antes de iniciar la prestación del servicio. En los servicios de carácter mensual, como el Plan de Contenido, el pago se realizará por adelantado para dar inicio al periodo contratado. El inicio del servicio estará sujeto a la confirmación del pago y a la recepción de la información necesaria para desarrollar el trabajo.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Inversión publicitaria</h3>
-                    <p>En los servicios relacionados con publicidad digital, el valor pagado a Fraelbeth González corresponde exclusivamente al servicio profesional contratado. La inversión destinada a publicidad en plataformas como Meta Ads, Google Ads o TikTok Ads no está incluida en el valor del servicio. El presupuesto publicitario será asumido directamente por el cliente, quien decidirá cuánto desea invertir. Fraelbeth González no garantiza resultados específicos derivados de la inversión publicitaria.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Cuentas, accesos y seguridad</h3>
-                    <p>El cliente mantiene en todo momento la propiedad y el control de sus cuentas, páginas, perfiles y activos digitales. No será necesario proporcionar contraseñas personales para la prestación del servicio. Cuando sea necesario, el cliente podrá otorgar los permisos correspondientes para trabajar sobre sus activos digitales. El cliente será responsable de proporcionar información verídica y de mantener sus contraseñas y datos personales bajo su propia custodia.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Configuración de campañas publicitarias</h3>
-                    <p>El servicio de configuración y puesta en marcha de campañas comprende las actividades especificadas en la propuesta o servicio contratado. La contratación del servicio no garantiza ventas, clientes, mensajes, conversiones, seguidores, alcance ni un resultado económico determinado. Los resultados de una campaña pueden depender de múltiples factores, incluyendo: presupuesto disponible, demanda del producto o servicio, calidad de la oferta, competencia, calidad del contenido y anuncios, página web o canal de contacto, atención y capacidad de respuesta del negocio, comportamiento de los usuarios, y políticas y algoritmos de las plataformas publicitarias.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Plan de contenido</h3>
-                    <p>El Plan de Contenido incluye únicamente las actividades, cantidad de publicaciones y servicios especificados en la propuesta o catálogo vigente al momento de la contratación. La gestión de comentarios y mensajes corresponde a la atención básica de las interacciones recibidas en las redes sociales acordadas. Este servicio no incluye atención al cliente especializada, manejo de reclamos, soporte técnico, gestión comercial, ventas ni disponibilidad permanente, salvo que estos servicios sean acordados y cotizados por separado.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Cambios y ajustes</h3>
-                    <p>Los servicios que incluyan diseño o creación de contenido contemplarán las rondas de ajustes especificadas en la propuesta correspondiente. Los cambios adicionales, modificaciones que alteren el concepto inicialmente aprobado o solicitudes que se encuentren fuera del alcance del servicio contratado podrán generar un costo adicional, el cual será informado previamente al cliente. Los errores ortográficos o errores atribuibles directamente a nuestro equipo serán corregidos sin costo adicional.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Tiempos de entrega</h3>
-                    <p>Los tiempos de entrega serán establecidos de acuerdo con el servicio contratado. El plazo comenzará a contar una vez se haya confirmado el pago correspondiente, el cliente haya entregado toda la información necesaria, y se hayan proporcionado los accesos requeridos, cuando correspondan. Los retrasos ocasionados por falta de información, materiales, accesos o aprobaciones por parte del cliente podrán modificar los tiempos inicialmente establecidos.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Cancelaciones, suspensiones y saldo a favor</h3>
-                    <p>Una vez realizado el pago, no se realizan devoluciones de dinero. En caso de que el cliente decida suspender o no continuar con el servicio contratado, el valor correspondiente al trabajo que aún no haya sido ejecutado podrá convertirse en un saldo a favor o bono de servicio para ser utilizado posteriormente. El bono tendrá una vigencia de 12 meses contados a partir de la fecha del pago original. El bono no es canjeable por dinero en efectivo, no es transferible a terceros, no genera intereses ni rendimientos, y no puede utilizarse para cubrir directamente la inversión publicitaria.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Resultados y responsabilidad</h3>
-                    <p>Fraelbeth González se compromete a prestar los servicios contratados de manera profesional y de acuerdo con el alcance previamente acordado. Sin embargo, no se garantiza un número específico de ventas, clientes, mensajes, conversiones, seguidores, alcance o retorno de inversión. Los resultados pueden verse afectados por factores externos y variables que se encuentran fuera del control de Fraelbeth González.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Confidencialidad</h3>
-                    <p>Fraelbeth González se compromete a manejar de manera responsable la información proporcionada por el cliente durante la prestación del servicio. La información comercial, estratégica y de acceso a cuentas será utilizada únicamente para los fines relacionados con el servicio contratado.</p>
-                </div>
-
-                <div class="terms-section">
-                    <h3>Aceptación de los términos</h3>
-                    <p>Al realizar el pago correspondiente, el cliente manifiesta que ha leído, comprendido y acepta los presentes términos y condiciones. La aceptación de estos términos, junto con la confirmación del pago, autoriza a Fraelbeth González a iniciar el servicio contratado.</p>
-                </div>
-            </div>
-
-            <button class="btn btn--primary modal__accept" id="acceptTermsBtn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Acepto las condiciones
-            </button>
-        </div>
-    </div>
 
     <script src="scripts.js"></script>
 </body>
